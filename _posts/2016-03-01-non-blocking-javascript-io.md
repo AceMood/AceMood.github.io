@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 青蛙跳台阶的问题——Fibonacci
-categories: Algorithm
+categories: JavaScript
 description: 使用 Fibonacci 来解决青蛙跳台阶的问题。
-keywords: 算法，Fibonacci
+keywords: node, non-blocking, javascript, io
 ---
 
 ##Hello World

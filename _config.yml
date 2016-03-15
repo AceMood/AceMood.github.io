@@ -22,3 +22,4 @@ excerpt_separator: "\n\n"
 
 gems:
     - kramdown
+    - jekyll-paginate
