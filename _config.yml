@@ -3,7 +3,6 @@
 # ---------------- #
 title: AceMood's Blog
 tagline: Done is better than perfect
-permalink: /:year/:month/:day/:title/
 
 # ---------------- #
 #      Jekyll      #
@@ -12,6 +11,7 @@ permalink: pretty
 markdown: kramdown
 kramdown:
     input: GFM
+    hard_wrap: false
 highlighter: rouge
 paginate: 8
 lsi: false
