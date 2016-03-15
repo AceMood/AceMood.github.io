@@ -1,11 +1,9 @@
-
-permalink: /:year/:month/:day/:title/
-
 # ---------------- #
-# Content Variable #
+#   Main Configs   #
 # ---------------- #
 title: AceMood's Blog
 tagline: Done is better than perfect
+permalink: /:year/:month/:day/:title/
 
 # ---------------- #
 #      Jekyll      #
