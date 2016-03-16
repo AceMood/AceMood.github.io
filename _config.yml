@@ -20,4 +20,5 @@ excerpt_separator: "\n\n"
 
 gems:
     - kramdown
+    - rouge
     - jekyll-paginate

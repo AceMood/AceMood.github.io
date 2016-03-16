@@ -15,7 +15,7 @@ This can be a long article, even more tedious. It's caused by <a title="problem"
 2. nextTick can be triggered first，setImmediate sometime come last.
 3. node environment has implememted all of the APIs.
 
-At the very beginning, I tried to search for some answers such as <a href="https://nodejs.org/dist/latest-v4.x/docs/api/process.html#process_process_nexttick_callback_arg" target="_blank">node official docs</a>，<a href="http://howtonode.org/understanding-process-next-tick" target="_blank">and</a> <a href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/" target="_blank">other</a> <a href="https://www.nczonline.net/blog/2013/07/09/the-case-for-setimmediate/" target="_blank">articles</a>. But unfortunately, I couldn't access the truth. The more clear explaination can be found in reddit blackboard, <a href="https://www.reddit.com/r/node/comments/2la8zb/setimmediate_vs_processnexttick_vs_settimeout/" target="_blank">1</a>, <a href="https://www.reddit.com/r/node/comments/323ojd/what_is_the_difference_between/" target="_blank">2</a> and the author of node wrote an <a href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/" target="_blank">article</a> trying to make sense. 
+At the very beginning, I tried to search for some answers such as <a href="https://nodejs.org/dist/latest-v4.x/docs/api/process.html#process_process_nexttick_callback_arg" target="_blank">node official docs</a>，<a href="http://howtonode.org/understanding-process-next-tick" target="_blank">and</a> <a href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/" target="_blank">other</a> <a href="https://www.nczonline.net/blog/2013/07/09/the-case-for-setimmediate/" target="_blank">articles</a>. But unfortunately, I couldn't access the truth. Other explaination can be found in reddit blackboard, <a href="https://www.reddit.com/r/node/comments/2la8zb/setimmediate_vs_processnexttick_vs_settimeout/" target="_blank">1</a>, <a href="https://www.reddit.com/r/node/comments/323ojd/what_is_the_difference_between/" target="_blank">2</a> and the author of node wrote an <a href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/" target="_blank">article</a> trying to make sense. 
 
 I can not tell how many people know the truth and want to explore it, if you know more information, please <a href="mailto:zmike86@gmail.com">contact me</a>, I'm waiting for more useful information.
 
@@ -27,11 +27,11 @@ Operating System's I/O Models can be classified into five categories: Blocking I
 
 #### Blocking I/O
 Most common model but with huge limitation, obviously it can only deal with one stream per time (stream can be file, socket or pipe). Its flows demonstrated below:
-<img src="/assets/images/20160201/git.001.jpg" alt="" width="610" height="420" />
+<img src="/assets/images/20160201/git.001.jpg" alt="" width="640" height="450" />
 
 #### Non-Blocking I/O
 AKA busy looping, it can deal with multi streams. The application process repeatedly call system to get the status of data, once a stream becomes data ready, process blocking for data copy and then process deal with the data available. But it has a big disadvantage for wasting CPU time. Its flows demonstrated below:
-<img src="/assets/images/20160201/git.002.jpg" alt="" width="610" height="420" />
+<img src="/assets/images/20160201/git.002.jpg" alt="" width="640" height="450" />
 
 #### I/O Multiplexing
 Select and poll are based on this type, see more about <a href="http://man7.org/linux/man-pages/man2/select.2.html" target="_blank">select</a> and <a href="http://man7.org/linux/man-pages/man2/poll.2.html" target="_blank">poll</a>. I/O Multiplexing retains the advantage of Non-Blocking I/O, it can also deal with multi streams at one time, but it's also a blocking type. Call select(or poll) will block application process until one streams becomes data ready. And even more worse, it introduce another system call(recvfrom). 
@@ -39,15 +39,15 @@ Select and poll are based on this type, see more about <a href="http://man7.org/
 Notes: Another closely related I/O model is to use multithreading with blocking I/O. That model very closely resembles the model described above, except that instead of using select to block on multiple file descriptors, the program uses multiple threads (one per file descriptor), and each thread is then free to call blocking system calls like recvfrom. 
 
 Its flows demonstrated below:
-<img src="/assets/images/20160201/git.003.jpg" alt="" width="610" height="420" />
+<img src="/assets/images/20160201/git.003.jpg" alt="" width="640" height="450" />
 
 #### Signal-driven I/O
 In this model, application process system call sigaction and install a signal handler, the kernel will return immediately and the main process can do other works without blocking. When the data is ready to be read, the SIGIO signal is generated for our process. We can either read the data from the signal handler by calling recvfrom and then notify the main loop that the data is ready to be processed, or we can notify the main loop and let it read the data. Its flows demonstrated below:
-<img src="/assets/images/20160201/git.004.jpg" alt="" width="610" height="420" />
+<img src="/assets/images/20160201/git.004.jpg" alt="" width="640" height="450" />
 
 #### Asynchronous I/O
 Asynchronous I/O is defined by the POSIX specification, it's an ideal model. In general, system call like aio_*  functions work by telling the kernel to start the operation and to notify us when the entire operation (including the copy of the data from the kernel to our buffer) is complete. The main difference between this model and the signal-driven I/O model in the previous section is that with signal-driven I/O, the kernel tells us when an I/O operation can be initiated, but with asynchronous I/O, the kernel tells us when an I/O operation is complete. Its flows demonstrated below:
-<img src="/assets/images/20160201/git.005.jpg" alt="" width="610" height="420" />
+<img src="/assets/images/20160201/git.005.jpg" alt="" width="640" height="450" />
 
 After introduced those type of I/O models, we can identify them with the current hot-spots technologies such as epoll in linux and <a title="kqueue" href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/kqueue.2.html" target="_blank">kqueue</a> in OSX. They're more like the sugnal-driven model, only the <a title="IOCP" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365198(v=vs.85).aspx" target="_blank">IOCP on windows</a> implement the fifth model. See more: <a title="epoll和kqueue的实现原理" href="https://www.zhihu.com/question/20122137http://" target="_blank">from zhihu</a>.
 
@@ -61,7 +61,7 @@ Before we can see more about libuv, I should make a tip, I have read many articl
 
 First I want to differ the conceptions of event loop and event loop iteration. Event loop is a task queue which bind with a thread and mostly they are one-one relation. Event loop iteration is the procedure when the runtime check for the executable code or task queued in event loop and execute it. The two conceptions corresponding two important function / object in libuv. One is <a href="http://docs.libuv.org/en/v1.x/loop.html#uv-loop-t-event-loop" target="_blank">uv_loop_t</a>, which represent for one event loop object and <a href="http://docs.libuv.org/en/v1.x/loop.html#c.uv_run" target="_blank">api: uv_run </a>, which can be treated as the entry point of event loop iteration. All functions in libuv named starts with `uv_`, which really make reading the source code easy. The most important API in libuv is uv_run, every time call this function can do a event loop iteration. uv_run code shows below(based on implementation of v1.8.0):
 
-```
+{% highlight cpp %}
 int uv_run(uv_loop_t* loop, uv_run_mode mode) {
   int timeout;
   int r;
@@ -71,7 +71,7 @@ int uv_run(uv_loop_t* loop, uv_run_mode mode) {
   if (!r)
     uv__update_time(loop);
 
-  while (r != 0 && loop-&gt;stop_flag == 0) {
+  while (r != 0 && loop->stop_flag == 0) {
     uv__update_time(loop);
     uv__run_timers(loop);
     ran_pending = uv__run_pending(loop);
@@ -115,13 +115,30 @@ int uv_run(uv_loop_t* loop, uv_run_mode mode) {
 
   return r;
 }
-```
-every time runtime do an event loop iteration, it executes the ordered code as figure:
-<img src="/assets/images/20160201/git.006.jpg" alt="" width="600" height="576" />
+{% endhighlight %}
+
+Every time runtime do an event loop iteration, it executes the ordered code as figure below, and we can know
+what kind of callbacks would be called during each event loop iteration. 
+<img src="/assets/images/20160201/git.006.jpg" alt="event loop iteration" width="640" height="600" />
+
+As libuv described the <a target="_blank" href="http://docs.libuv.org/en/v1.x/design.html">underline principle</a>, timer relative callbacks will be called in the `uv__run_timers(loop)` step, but it don't mention about `setImmediate` and `process.nextTick`. It's reasonable obviously, libuv isn't just for node, so logic in node will be taken account in node iteself. After diving into the source code of node, we can see what happened when setTimeout/setInterval, setImmediate and process.nextTick.
+
+## Node
+
+Node is a popular and famous runtime for JavaScript, this article don't cover any primary technology about node which you can find in any other technical books. If you want to, I'm willing to recommend you <a target="_blank" href="http://www.amazon.cn/Node-js%E5%AE%9E%E6%88%98-%E5%9D%8E%E7%89%B9%E4%BC%A6/dp/B00K4RUZHW/ref=sr_1_2?s=books&ie=UTF8&qid=1458129004&sr=1-2&keywords=nodejs">Node.js in Action</a> and <a target="_blank" href="http://www.amazon.cn/Mastering-Node-js-Pasquali-Sandro/dp/B00GX9HM8A/ref=sr_1_1?ie=UTF8&qid=1458129053&sr=8-1&keywords=mastering+node.js">Mastering Node.js</a>.
+
+#### setTimeout/setInterval
+> Timers are crucial to Node.js. Internally, any TCP I/O connection creates a timer so that we can time out of connections. Additionally, many user user libraries and applications also use timers. As such there may be a significantly large amount of timeouts scheduled at any given time. Therefore, it is very important that the timers implementation is performant and efficient.
+  
+In node, definition of setTimeout and setInterval locate at `lib/timer.js` 
+
+#### setImmediate
+
+#### process.nextTick
 
 
 
-To be continued... coming soon
+Yet not finished, coming soon...
 
 <span class="note__caption--warning">Note:</span>
 <em class="note__content--warning"> I am a Chinese, writing in English is for exercise. If you want to refer my articles, please mark your own as refer from <a title="AceMood's Blog" href="http://acemood.github.io" target="_blank">AceMood's Blog.</a></em>
