@@ -127,12 +127,44 @@ As libuv described the <a target="_blank" href="http://docs.libuv.org/en/v1.x/de
 
 Node is a popular and famous runtime for JavaScript, this article don't cover any primary technology about node which you can find in any other technical books. If you want to, I'm willing to recommend you <a target="_blank" href="http://www.amazon.cn/Node-js%E5%AE%9E%E6%88%98-%E5%9D%8E%E7%89%B9%E4%BC%A6/dp/B00K4RUZHW/ref=sr_1_2?s=books&ie=UTF8&qid=1458129004&sr=1-2&keywords=nodejs">Node.js in Action</a> and <a target="_blank" href="http://www.amazon.cn/Mastering-Node-js-Pasquali-Sandro/dp/B00GX9HM8A/ref=sr_1_1?ie=UTF8&qid=1458129053&sr=8-1&keywords=mastering+node.js">Mastering Node.js</a>.
 
-#### setTimeout/setInterval
+All node source code shown in this article based on v4.4.0(LTS). 
+
+#### setTimeout
 > Timers are crucial to Node.js. Internally, any TCP I/O connection creates a timer so that we can time out of connections. Additionally, many user user libraries and applications also use timers. As such there may be a significantly large amount of timeouts scheduled at any given time. Therefore, it is very important that the timers implementation is performant and efficient.
   
-In node, definition of setTimeout and setInterval locate at `lib/timer.js` 
+In node, definition of setTimeout and setInterval locate at `lib/timer.js`. For performance, timeout objects with their timeout value are stored in a Map structure, key is timeout in millisecond. Value is a linked-list contains all the timeout objects share the same timeout value. It used a c++ handle defined in `src/timer_wrap.cc`. When you write the code `setTimeout(callback, timeout)`, node initialize a linked-list(if not exists) contains the timeout object, which has a _timer field point to an instance of TimerWrap, then call the _timer.start method to delegate the timeout task to node. 
+{% highlight javascript %}
+  list = new TimersList(msecs, unrefed);
+  // code ignored
+  list._timer.start(msecs, 0);
+{% endhighlight %}
+
+During the TimerWrap initialization, it also init its handle_, a `uv_timer_t` object.
+{% highlight cpp %}
+  int r = uv_timer_init(env->event_loop(), &handle_);
+{% endhighlight %}
+
+Then the TimerWrap designate the timeout task to its handle_. The work flow is simple enough that node never take care of what time exactly the timeout callback get called, it all depends on libuv's API. We can see it in the Start method of TimerWrap (called from javascript code).
+{% highlight cpp %}
+  int64_t timeout = args[0]->IntegerValue();
+  int64_t repeat = args[1]->IntegerValue();
+  int err = uv_timer_start(&wrap->handle_, OnTimeout, timeout, repeat);
+{% endhighlight %}
+
+Back to the figure above in libuv section, you can find in each event loop iteration, event_loop can schedule the timeout task itself, with update the time of event_loop, it can accurately know when to execute the OnTimeout callback of TimerWrap. Which can invoke the bound javascript functions.
+{% highlight cpp %}
+  static void OnTimeout(uv_timer_t* handle) {
+    TimerWrap* wrap = static_cast<TimerWrap*>(handle->data);
+    Environment* env = wrap->env();
+    HandleScope handle_scope(env->isolate());
+    Context::Scope context_scope(env->context());
+    wrap->MakeCallback(kOnTimeout, 0, nullptr);
+  }
+{% endhighlight %}
 
 #### setImmediate
+
+Node did more job when you write code as `setImmediate(callback)`.
 
 #### process.nextTick
 
@@ -140,6 +172,13 @@ In node, definition of setTimeout and setInterval locate at `lib/timer.js`
 
 Yet not finished, coming soon...
 
-<span class="note__caption--warning">Note:</span>
+<div class="note">
+<span class="note__caption">Note:</span>
+<em class="note__content--normal"> I am very lucky, though I am a JavaScript developer I have a bundle of guys who know C++ very well, they teach me a lot and provide useful information.</em>
+</div>
+
+<div class="note">
+<span class="note__caption">Note:</span>
 <em class="note__content--warning"> I am a Chinese, writing in English is for exercise. If you want to refer my articles, please mark your own as refer from <a title="AceMood's Blog" href="http://acemood.github.io" target="_blank">AceMood's Blog.</a></em>
+</div>
 

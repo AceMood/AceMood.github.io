@@ -1,10 +1,14 @@
 
 /* warning notes often appear on footer of article */
-.note__caption--warning {
+.note {}
+.note__caption {
     color: #373737;
     font-style: normal;
     font-weight: bold;
 }
 .note__content--warning {
-    color: firebrick;
+    color: #b22222;
+}
+.note__content--normal {
+    color: #222;
 }
