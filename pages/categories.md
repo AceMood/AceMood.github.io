@@ -1,7 +1,7 @@
 ---
-layout: categories
+layout: category
 title: Categories
-keywords: Categories
+keywords: category
 comments: false
 menu: Categories
 permalink: /categories/

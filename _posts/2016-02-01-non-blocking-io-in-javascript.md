@@ -23,31 +23,31 @@ The first thing I want to say is about I/O.
 
 ## I/O Models
 
-Operating System's I/O Models can be classified into five categories: Blocking I/O, Non-blocking I/O, I/O Multiplexing, Signal-driven I/O and Asynchronous I/O. I will take Network IO case for examples, though there still have File IO and other types, such as DNS relative and user code in node. Take network as example is for convenience.
+Operating System's I/O Models can be classified into five categories: Blocking I/O, Non-blocking I/O, I/O Multiplexing, Signal-driven I/O and Asynchronous I/O. I will take Network IO case for example, though there still have File IO and other types, such as DNS relative and user code in node. Take Network scenario as example is for convenience.
 
 #### Blocking I/O
 Most common model but with huge limitation, obviously it can only deal with one stream per time (stream can be file, socket or pipe). Its flows demonstrated below:
-<img src="/assets/images/20160301/git.001.jpg" alt="" width="610" height="420" />
+<img src="/assets/images/20160201/git.001.jpg" alt="" width="610" height="420" />
 
 #### Non-Blocking I/O
-AKA busy looping, it can deal with multi streams. The application process repeatedly call system to get the status of data, once a stream becomes data ready, process blocking for data copy and then process deal with the data available. But it has a big disadvantage for waste CPU time. Its flows demonstrated below:
-<img src="/assets/images/20160301/git.002.jpg" alt="" width="610" height="420" />
+AKA busy looping, it can deal with multi streams. The application process repeatedly call system to get the status of data, once a stream becomes data ready, process blocking for data copy and then process deal with the data available. But it has a big disadvantage for wasting CPU time. Its flows demonstrated below:
+<img src="/assets/images/20160201/git.002.jpg" alt="" width="610" height="420" />
 
 #### I/O Multiplexing
-Select and poll are based on this type, see more <a href="http://man7.org/linux/man-pages/man2/select.2.html" target="_blank">select</a> and <a href="http://man7.org/linux/man-pages/man2/poll.2.html" target="_blank">poll</a>. I/O Multiplexing retains the advantage of Non-Blocking I/O, it can also deal with multi streams at one time, but it's also a blocking type. Call select(or poll) will block application process until one streams becomes data ready. And even more worse, it introduce another system call(recvfrom). 
+Select and poll are based on this type, see more about <a href="http://man7.org/linux/man-pages/man2/select.2.html" target="_blank">select</a> and <a href="http://man7.org/linux/man-pages/man2/poll.2.html" target="_blank">poll</a>. I/O Multiplexing retains the advantage of Non-Blocking I/O, it can also deal with multi streams at one time, but it's also a blocking type. Call select(or poll) will block application process until one streams becomes data ready. And even more worse, it introduce another system call(recvfrom). 
 
 Notes: Another closely related I/O model is to use multithreading with blocking I/O. That model very closely resembles the model described above, except that instead of using select to block on multiple file descriptors, the program uses multiple threads (one per file descriptor), and each thread is then free to call blocking system calls like recvfrom. 
 
 Its flows demonstrated below:
-<img src="/assets/images/20160301/git.003.jpg" alt="" width="610" height="420" />
+<img src="/assets/images/20160201/git.003.jpg" alt="" width="610" height="420" />
 
 #### Signal-driven I/O
 In this model, application process system call sigaction and install a signal handler, the kernel will return immediately and the main process can do other works without blocking. When the data is ready to be read, the SIGIO signal is generated for our process. We can either read the data from the signal handler by calling recvfrom and then notify the main loop that the data is ready to be processed, or we can notify the main loop and let it read the data. Its flows demonstrated below:
-<img src="/assets/images/20160301/git.004.jpg" alt="" width="610" height="420" />
+<img src="/assets/images/20160201/git.004.jpg" alt="" width="610" height="420" />
 
 #### Asynchronous I/O
 Asynchronous I/O is defined by the POSIX specification, it's an ideal model. In general, system call like aio_*  functions work by telling the kernel to start the operation and to notify us when the entire operation (including the copy of the data from the kernel to our buffer) is complete. The main difference between this model and the signal-driven I/O model in the previous section is that with signal-driven I/O, the kernel tells us when an I/O operation can be initiated, but with asynchronous I/O, the kernel tells us when an I/O operation is complete. Its flows demonstrated below:
-<img src="/assets/images/20160301/git.005.jpg" alt="" width="610" height="420" />
+<img src="/assets/images/20160201/git.005.jpg" alt="" width="610" height="420" />
 
 After introduced those type of I/O models, we can identify them with the current hot-spots technologies such as epoll in linux and <a title="kqueue" href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/kqueue.2.html" target="_blank">kqueue</a> in OSX. They're more like the sugnal-driven model, only the <a title="IOCP" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365198(v=vs.85).aspx" target="_blank">IOCP on windows</a> implement the fifth model. See more: <a title="epoll和kqueue的实现原理" href="https://www.zhihu.com/question/20122137http://" target="_blank">from zhihu</a>.
 
@@ -116,8 +116,8 @@ int uv_run(uv_loop_t* loop, uv_run_mode mode) {
   return r;
 }
 ```
-every time runtime do an event loop iteration, it execute the ordered code as figure:
-<img src="/assets/images/20160301/git.006.jpg" alt="" width="600" height="576" />
+every time runtime do an event loop iteration, it executes the ordered code as figure:
+<img src="/assets/images/20160201/git.006.jpg" alt="" width="600" height="576" />
 
 
 
