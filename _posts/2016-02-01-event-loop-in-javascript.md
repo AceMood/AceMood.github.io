@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Non-blocking IO in JavaScript
+title: Event loop in JavaScript
 tagline: by AceMood
 categories: JavaScript
 sc: js
-description: Non-blocking IO in JavaScript
-keywords: Node, non-blocking io, javascript, setTimeout, nextTick, setImmediate
+description: Event loop in JavaScript
+keywords: Node, event loop, javascript, setTimeout, nextTick, setImmediate
 ---
 
 > There are only two kinds of languages: the ones people complain about and the ones nobody uses.     --- <a class="authorOrTitle" href="https://www.goodreads.com/author/show/64947.Bjarne_Stroustrup">Bjarne Stroustrup</a>
@@ -130,7 +130,7 @@ Node is a popular and famous runtime for JavaScript, this article don't cover an
 
 All Node source code shown in this article based on v4.4.0(LTS). 
 
-#### User code in Node
+#### User code
 
 ###### setTimeout
 > Timers are crucial to Node.js. Internally, any TCP I/O connection creates a timer so that we can time out of connections. Additionally, many user user libraries and applications also use timers. As such there may be a significantly large amount of timeouts scheduled at any given time. Therefore, it is very important that the timers implementation is performant and efficient.
@@ -220,4 +220,3 @@ Not yet finished, coming soon...
 <span class="note__caption">Note:</span>
 <em class="note__content--warning"> I am a Chinese, writing in English is for exercise. If you want to refer my articles, please mark your own as refer from <a title="AceMood's Blog" href="{{ page.url }}" target="_blank">AceMood's Blog.</a></em>
 </div>
-
