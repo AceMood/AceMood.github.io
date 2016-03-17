@@ -7,7 +7,7 @@ tagline: Done is better than perfect
 # ---------------- #
 #      Jekyll      #
 # ---------------- #
-permalink: pretty
+permalink: /:year/:month/:day/:title/
 markdown: kramdown
 kramdown:
     input: GFM
