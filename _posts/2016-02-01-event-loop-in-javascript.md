@@ -5,7 +5,7 @@ tagline: by AceMood
 categories: JavaScript
 sc: js
 description: Event loop in JavaScript
-keywords: Node, event loop, javascript, setTimeout, nextTick, setImmediate
+keywords: Node, non-blocking, event loop, javascript, setTimeout, nextTick, setImmediate
 ---
 
 > There are only two kinds of languages: the ones people complain about and the ones nobody uses.     --- <a class="authorOrTitle" href="https://www.goodreads.com/author/show/64947.Bjarne_Stroustrup">Bjarne Stroustrup</a>
@@ -60,7 +60,11 @@ Then I have to have a look at libuv, a cpp writen I/O library.
 
 Before we read more about libuv, I should make a tip, I have read many articles and js guides who introduce the event loop in JavaScript, and they seem no much more difference. I think those authors mean to explain the conception as easy as possible and most of them do not show the source code of <a target="_blank" title="webkit" href="https://webkit.org/">Webkit</a> or Node. Many people forget how the event loop schedule and face to the same problem when they encounter it again.
 
-First I want to differ the conceptions of event loop and event loop iteration. Event loop is a task queue which bind with a thread and mostly they are one-to-one relation. Event loop iteration is the procedure when the runtime check for the executable code or task queued in event loop and execute it. The two conceptions corresponding two important function / object in libuv. One is <a href="http://docs.libuv.org/en/v1.x/loop.html#uv-loop-t-event-loop" target="_blank">uv_loop_t</a>, which represent for one event loop object and <a href="http://docs.libuv.org/en/v1.x/loop.html#c.uv_run" target="_blank">API: uv_run </a>, which can be treated as the entry point of event loop iteration. All functions in libuv named starts with `uv_`, which really make reading the source code easy. The most important API in libuv is uv_run, every time call this function can do a event loop iteration. uv_run code shows below(based on implementation of v1.8.0):
+First I want to differ the conceptions of event loop and event loop iteration. Event loop is a task queue which bind with a thread and mostly they are one-to-one relation. Event loop iteration is the procedure when the runtime check for the executable code or task queued in event loop and execute it. The two conceptions corresponding two important function / object in libuv. One is <a href="http://docs.libuv.org/en/v1.x/loop.html#uv-loop-t-event-loop" target="_blank">uv_loop_t</a>, which represent for one event loop object and <a href="http://docs.libuv.org/en/v1.x/loop.html#c.uv_run" target="_blank">API: uv_run </a>, which can be treated as the entry point of event loop iteration. All functions in libuv named starts with `uv_`, which really make reading the source code easy. 
+
+#### uv_run
+
+The most important API in libuv is `uv_run`, every time call this function can do a event loop iteration. uv_run code shows below(based on implementation of v1.8.0):
 
 {% highlight cpp %}
 int uv_run(uv_loop_t* loop, uv_run_mode mode) {
@@ -130,7 +134,29 @@ Node is a popular and famous runtime for JavaScript, this article don't cover an
 
 All Node source code shown in this article based on v4.4.0(LTS). 
 
-#### User code
+#### Setup
+
+When setup a Node process, it also setup an event loop. See method `StartNodeInstance` in `src/node.cc`, if event loop is alive the do-while loop will continue.
+{% highlight cpp %}
+  bool more;
+  do {
+    v8::platform::PumpMessageLoop(default_platform, isolate);
+    more = uv_run(env->event_loop(), UV_RUN_ONCE);
+
+    if (more == false) {
+      v8::platform::PumpMessageLoop(default_platform, isolate);
+      EmitBeforeExit(env);
+
+      // Emit `beforeExit` if the loop became alive either after emitting
+      // event, or after running some callbacks.
+      more = uv_loop_alive(env->event_loop());
+      if (uv_run(env->event_loop(), UV_RUN_NOWAIT) != 0)
+        more = true;
+    }
+  } while (more == true);
+{% endhighlight %}
+
+#### User code of async
 
 ###### setTimeout
 > Timers are crucial to Node.js. Internally, any TCP I/O connection creates a timer so that we can time out of connections. Additionally, many user user libraries and applications also use timers. As such there may be a significantly large amount of timeouts scheduled at any given time. Therefore, it is very important that the timers implementation is performant and efficient.
@@ -175,7 +201,7 @@ Then the TimerWrap designate the timeout task to its handle_. The work flow is s
   int err = uv_timer_start(&wrap->handle_, OnTimeout, timeout, repeat);
 {% endhighlight %}
 
-Back to the figure above in <a href="#libuv">libuv section</a>, you can find in each event loop iteration, event_loop can schedule the timeout task itself, with update the time of event_loop, it can accurately know when to execute the OnTimeout callback of TimerWrap. Which can invoke the bound javascript functions.
+Back to the figure above in <a href="#uvrun">libuv section</a>, you can find in each event loop iteration, event_loop can schedule the timeout task itself, with update the time of event_loop, it can accurately know when to execute the OnTimeout callback of TimerWrap. Which can invoke the bound javascript functions.
 {% highlight cpp %}
   static void OnTimeout(uv_timer_t* handle) {
     TimerWrap* wrap = static_cast<TimerWrap*>(handle->data);
@@ -200,14 +226,58 @@ Notice about the `uv_timer_again(handle)` code above, it differs the setTimeout 
 
 ###### setImmediate
 
-Node did almost the same job when you write javascript code as `setImmediate(callback)`.
+Node did almost the same job when you write javascript code as `setImmediate(callback)`. Definition of setImmediate is also in `lib/timer.js`, when call this method it will add private property `_immediateCallback` to process object so that C++ bindings can identify the callbacks' proxy registered, and finally return an immediate object (you can think it as another timeout object but without timeout property). Internally, `timer.js` maintain an array named immediateQueue, which contains all callbacks installed in current event loop iteration.
+{% highlight javascript %}
+  if (!process._needImmediateCallback) {
+    process._needImmediateCallback = true;
+    process._immediateCallback = processImmediate;
+  }
+
+  if (process.domain)
+    immediate.domain = process.domain;
+
+  L.append(immediateQueue, immediate);
+
+  return immediate;
+{% endhighlight %}
+
+Before Node <a href="#setup">setup an event loop</a>, it build an Environment object (Environment class definition locates in `src/env.h`) which shared by all current process code. See the method `CreateEnvironment` in `src/node.cc`. CreateEnvironment setup an `uv_check_t` used by its event loop.
+{% highlight cpp %}
+  uv_check_init(env->event_loop(), env->immediate_check_handle());
+
+  // code ignored
+  
+  SetupProcessObject(env, argc, argv, exec_argc, exec_argv);
+{% endhighlight %}
+  
+It also call a method `SetupProcessObject` in `src/node.cc`, this can make global process object have necessary bindings. From code below we can find that it assign an set accessor by calling need_imm_cb_string() to the `NeedImmediateCallbackSetter` method. If we had a look at `src/env.h`, we know that need_imm_cb_string() return this string: "_needImmediateCallback". This means every time javascript code set an "_needImmediateCallback" property on process object, NeedImmediateCallbackSetter will be called.
+{% highlight cpp %}
+  maybe = process->SetAccessor(env->context(),
+                               env->need_imm_cb_string(),
+                               NeedImmediateCallbackGetter,
+                               NeedImmediateCallbackSetter,
+                               env->as_external());
+{% endhighlight %}
+
+It becomes more clear when find that in `NeedImmediateCallbackSetter` it start the `uv_check_t` handle, which managed by libuv's event loop (also env->event_loop()), and initialized in CreateEnvironment method.
+{% highlight cpp %}
+// code ignored
+
+uv_check_start(immediate_check_handle, CheckImmediate);
+
+// code ignored
+{% endhighlight %}
 
 ###### process.nextTick
 
-#### Async File I/O
+#### File I/O
 
 #### Network I/O
 
+## Quiz
+
+## Conclusion
+What you think about, what you want.
 
 Not yet finished, coming soon...
 
