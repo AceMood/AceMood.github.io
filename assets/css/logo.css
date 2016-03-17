@@ -42,6 +42,19 @@ by AceMood
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 }
+.logo__life:before {
+    display: block;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    font-size: 32px;
+    text-align: center;
+    content: "L";
+    color: #fff;
+    background: #3cbc8d;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
 .logo__author:before {
     display: block;
     width: 44px;
