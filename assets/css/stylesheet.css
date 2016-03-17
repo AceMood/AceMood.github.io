@@ -4,6 +4,7 @@ by Jason Costello, @jsncostello
 *******************************************************************************/
 
 @import url(github-light.css);
+@import url(logo.css);
 
 /*******************************************************************************
 MeyerWeb Reset
@@ -270,46 +271,6 @@ Full-Width Styles
   max-width: 640px;
   padding: 20px 10px;
   margin: 0 auto;
-}
-
-#logo {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 10px;
-  width: 44px;
-  height: 44px;
-  z-index: 10;
-  font-weight: 700;
-  box-shadow: 0 0 10px rgba(0,0,0,.5);
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-.logo__js:before {
-  display: block;
-  width: 44px;
-  height: 44px;
-  line-height: 44px;
-  font-size: 32px;
-  text-align: center;
-  content: "JS";
-  color: #fff;
-  background: #f6b33c;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-.logo__fe:before {
-  display: block;
-  width: 44px;
-  height: 44px;
-  line-height: 44px;
-  font-size: 32px;
-  text-align: center;
-  content: "FE";
-  color: #fff;
-  background: #1c94c6;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
 }
 
 #forkme_banner {

@@ -130,7 +130,9 @@ Node is a popular and famous runtime for JavaScript, this article don't cover an
 
 All Node source code shown in this article based on v4.4.0(LTS). 
 
-#### setTimeout
+#### User code in Node
+
+###### setTimeout
 > Timers are crucial to Node.js. Internally, any TCP I/O connection creates a timer so that we can time out of connections. Additionally, many user user libraries and applications also use timers. As such there may be a significantly large amount of timeouts scheduled at any given time. Therefore, it is very important that the timers implementation is performant and efficient.
   
 In Node, definition of setTimeout and setInterval locate at `lib/timer.js`. For performance, timeout objects with their timeout value are stored in a Map structure, key is the timeout value in millisecond. Value is a linked-list contains all the timeout objects share the same timeout value. It used a c++ handle defined in `src/timer_wrap.cc`. When you write the code `setTimeout(callback, timeout)`, Node initialize a linked-list(if not exists) contains the timeout object, which has a _timer field point to an instance of TimerWrap, then call the _timer.start method to delegate the timeout task to Node.
@@ -196,19 +198,22 @@ For deeper into libuv source code, every time `uv_run` invoke `uv__run_timers(lo
     
 Notice about the `uv_timer_again(handle)` code above, it differs the setTimeout and setInterval, but the two APIs invoke the same functions underline.  
 
-#### setImmediate
+###### setImmediate
 
 Node did almost the same job when you write javascript code as `setImmediate(callback)`.
 
-#### process.nextTick
+###### process.nextTick
 
+#### Async File I/O
+
+#### Network I/O
 
 
 Not yet finished, coming soon...
 
 <div class="note">
 <span class="note__caption">Note:</span>
-<em class="note__content--normal"> I am very lucky to have a bundle of guys who know C++ very well, they teach me a lot and provide useful information.</em>
+<em class="note__content--normal"> I am very lucky to have a bundle of guys as friends who know C++ very well, they teach me a lot and provide useful information.</em>
 </div>
 
 <div class="note">
