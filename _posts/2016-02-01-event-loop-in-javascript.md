@@ -250,7 +250,7 @@ Before Node <a href="#setup">setup an event loop</a>, it build an Environment ob
   SetupProcessObject(env, argc, argv, exec_argc, exec_argv);
 {% endhighlight %}
   
-It also call a method `SetupProcessObject` in `src/node.cc`, this can make global process object have necessary bindings. From code below we can find that it assign an set accessor by calling need_imm_cb_string() to the `NeedImmediateCallbackSetter` method. If we had a look at `src/env.h`, we know that need_imm_cb_string() return this string: "_needImmediateCallback". This means every time javascript code set an "_needImmediateCallback" property on process object, NeedImmediateCallbackSetter will be called.
+It also called a method `SetupProcessObject` which defined in `src/node.cc`, this can make global process object have necessary bindings. From code below we can find that it assign an set accessor by calling need_imm_cb_string() to the `NeedImmediateCallbackSetter` method. If we had a look at `src/env.h`, we know that need_imm_cb_string() return the string: "_needImmediateCallback". This means every time javascript code set an "_needImmediateCallback" property on process object, NeedImmediateCallbackSetter will get called.
 {% highlight cpp %}
   maybe = process->SetAccessor(env->context(),
                                env->need_imm_cb_string(),
@@ -259,14 +259,38 @@ It also call a method `SetupProcessObject` in `src/node.cc`, this can make globa
                                env->as_external());
 {% endhighlight %}
 
-It becomes more clear when find that in `NeedImmediateCallbackSetter` it start the `uv_check_t` handle, which managed by libuv's event loop (also env->event_loop()), and initialized in CreateEnvironment method.
+It becomes more clear when find that in `NeedImmediateCallbackSetter` it start the `uv_check_t` handle if process._needImmediateCallback is set to true, which managed by libuv's event loop (also env->event_loop()), and initialized in CreateEnvironment method.
 {% highlight cpp %}
-// code ignored
+  // code ignored
+  
+  if (active == value->BooleanValue())
+    return;
 
-uv_check_start(immediate_check_handle, CheckImmediate);
+  uv_idle_t* immediate_idle_handle = env->immediate_idle_handle();  
 
-// code ignored
+  if (active) {
+    uv_check_stop(immediate_check_handle);
+    uv_idle_stop(immediate_idle_handle);
+  } else {
+    uv_check_start(immediate_check_handle, CheckImmediate);
+    // Idle handle is needed only to stop the event loop 
+    // from blocking in poll.
+    uv_idle_start(immediate_idle_handle, IdleImmediateDummy);
+  }
+
 {% endhighlight %}
+
+At last, we dive into `CheckImmediate`, notice the immediate_callback_string method will return string: "_immediateCallback", that we have seen in timer.js.
+{% highlight cpp %}
+  static void CheckImmediate(uv_check_t* handle) {
+    Environment* env = Environment::from_immediate_check_handle(handle);
+    HandleScope scope(env->isolate());
+    Context::Scope context_scope(env->context());
+    MakeCallback(env, env->process_object(), env->immediate_callback_string());
+  }
+{% endhighlight %}
+
+So we knew that, in every event loop iteration, setImmediate callbacks would be executed in the `uv__run_check(loop);` step followed `uv__io_poll(loop, timeout);`. If get a little confused, you can back to the diagram in <a href="#libuv">event loop iteration execute order.</a>
 
 ###### process.nextTick
 
