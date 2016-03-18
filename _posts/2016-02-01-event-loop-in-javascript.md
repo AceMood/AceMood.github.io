@@ -303,6 +303,13 @@ So we knew that, in every event loop iteration, setImmediate callbacks would be 
 ## Conclusion
 What you think about, what you want.
 
+## References
+[1] <a target="_blank" href="http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/">http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/</a><br/>
+[2] <a target="_blank" href="http://hueniverse.com/2011/06/29/the-style-of-non-blocking/">http://hueniverse.com/2011/06/29/the-style-of-non-blocking/</a><br/>
+[3] <a target="_blank" href="http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/">http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/</a><br/>
+[4] <a target="_blank" href=""></a><br/>
+[5] <a target="_blank" href=""></a><br/>
+
 Not yet finished, coming soon...
 
 <div class="note">
