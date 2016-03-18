@@ -10,13 +10,13 @@ keywords: Node, non-blocking, event loop, javascript, setTimeout, nextTick, setI
 
 > There are only two kinds of languages: the ones people complain about and the ones nobody uses.     --- <a class="authorOrTitle" href="https://www.goodreads.com/author/show/64947.Bjarne_Stroustrup">Bjarne Stroustrup</a>
 
-This can be a long article, even more tedious. It's caused by <a title="problem" href="https://gist.github.com/mmalecki/1257394" target="_blank">a topic of process.nextTick</a>. Javascript developer or front-end engineer can face to setTimeout, setImmediate, nextTick everyday, but what the difference between them? Some seniors can tell:
+This can be a long article, even tedious. It's caused by <a title="problem" href="https://gist.github.com/mmalecki/1257394" target="_blank">a topic of process.nextTick</a>. Javascript developer or front-end engineer can face to setTimeout, setImmediate, nextTick everyday, but what the difference between them? Some seniors can tell:
 
 1. setImmediate is lack of implementations on browser side, only high-versioned Internet Explorer do this job.
 2. nextTick can be triggered first，setImmediate sometime come last.
 3. Node environment has implememted all of the APIs.
 
-At the very beginning, I tried to search for some answers such as <a href="https://nodejs.org/dist/latest-v4.x/docs/api/process.html#process_process_nexttick_callback_arg" target="_blank">Node official docs</a>，<a href="http://howtonode.org/understanding-process-next-tick" target="_blank">and</a> <a href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/" target="_blank">other</a> <a href="https://www.nczonline.net/blog/2013/07/09/the-case-for-setimmediate/" target="_blank">articles</a>. But unfortunately, I couldn't access the truth. Other explaination can be found in reddit blackboard, <a href="https://www.reddit.com/r/node/comments/2la8zb/setimmediate_vs_processnexttick_vs_settimeout/" target="_blank">1</a>, <a href="https://www.reddit.com/r/node/comments/323ojd/what_is_the_difference_between/" target="_blank">2</a> and the author of Node wrote an <a href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/" target="_blank">article</a> try to explain the logic underline. 
+At the very beginning, I tried to search for some answers such as <a href="https://nodejs.org/dist/latest-v4.x/docs/api/process.html#process_process_nexttick_callback_arg" target="_blank">Node official docs</a>，<a href="http://howtonode.org/understanding-process-next-tick" target="_blank">and</a> <a href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/" target="_blank">other</a> <a href="https://www.nczonline.net/blog/2013/07/09/the-case-for-setimmediate/" target="_blank">articles</a>. But unfortunately, I couldn't access the truth. Other explaination can be found in reddit blackboard, <a href="https://www.reddit.com/r/node/comments/2la8zb/setimmediate_vs_processnexttick_vs_settimeout/" target="_blank">1</a>, <a href="https://www.reddit.com/r/node/comments/323ojd/what_is_the_difference_between/" target="_blank">2</a> and the author of Node wrote an <a href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/" target="_blank">article</a> try to explain the logics. 
 
 I can not tell how many people know the truth and want to explore it, if you know more information, please <a href="mailto:zmike86@gmail.com">contact me</a>, I'm waiting for more useful information.
 
@@ -24,35 +24,35 @@ The first thing I want to say is about I/O.
 
 ## I/O Models
 
-Operating System's I/O Models can be classified into five categories: Blocking I/O, Non-blocking I/O, I/O Multiplexing, Signal-driven I/O and Asynchronous I/O. I will take Network IO case for example, though there still have File IO and other types, such as DNS relative and user code in Node. Take Network scenario as example is for convenience.
+Operating System's I/O Models can be classified into five categories: Blocking I/O, Non-blocking I/O, I/O Multiplexing, Signal-driven I/O and Asynchronous I/O. I will take Network I/O case for example, though there still have File I/O and other types, such as DNS relative and user code in Node. Take Network scenario as example is just for convenience.
 
 #### Blocking I/O
-Most common model but with huge limitation, obviously it can only deal with one stream per time (stream can be file, socket or pipe). Its flows demonstrated below:
+Blocking I/O is the most common model but with huge limitation, obviously it can only deal with one stream (stream can be file, socket or pipe). Its flows diagram demonstrated below:
 <img src="/assets/images/20160201/git.001.jpg" alt="" width="640" height="450" />
 
 #### Non-Blocking I/O
-AKA busy looping, it can deal with multi streams. The application process repeatedly call system to get the status of data, once a stream becomes data ready, process blocking for data copy and then process deal with the data available. But it has a big disadvantage for wasting CPU time. Its flows demonstrated below:
+Non-Blocking I/O, AKA busy looping, it can deal with multiple streams. The application process repeatedly call system to get the status of data, once any stream becomes data ready, the application process block for data copy and then deal with the data available. But it has a big disadvantage for wasting CPU time. Its flows diagram sdemonstrated below:
 <img src="/assets/images/20160201/git.002.jpg" alt="" width="640" height="450" />
 
 #### I/O Multiplexing
-Select and poll are based on this type, see more about <a href="http://man7.org/linux/man-pages/man2/select.2.html" target="_blank">select</a> and <a href="http://man7.org/linux/man-pages/man2/poll.2.html" target="_blank">poll</a>. I/O Multiplexing retains the advantage of Non-Blocking I/O, it can also deal with multi streams at one time, but it's also a blocking type. Call select(or poll) will block application process until one streams becomes data ready. And even more worse, it introduce another system call(recvfrom). 
+Select and poll are based on this type, see more about <a href="http://man7.org/linux/man-pages/man2/select.2.html" target="_blank">select</a> and <a href="http://man7.org/linux/man-pages/man2/poll.2.html" target="_blank">poll</a>. I/O Multiplexing retains the advantage of Non-Blocking I/O, it can also deal with multiple streams at one time, but it's also a blocking type. Call select (or poll) will block application process until any stream becomes ready. And even worse, it introduce another system call (recvfrom). 
 
 Notes: Another closely related I/O model is to use multithreading with blocking I/O. That model very closely resembles the model described above, except that instead of using select to block on multiple file descriptors, the program uses multiple threads (one per file descriptor), and each thread is then free to call blocking system calls like recvfrom. 
 
-Its flows demonstrated below:
+Its flows diagram demonstrated below:
 <img src="/assets/images/20160201/git.003.jpg" alt="" width="640" height="450" />
 
 #### Signal-driven I/O
-In this model, application process system call sigaction and install a signal handler, the kernel will return immediately and the main process can do other works without blocking. When the data is ready to be read, the SIGIO signal is generated for our process. We can either read the data from the signal handler by calling recvfrom and then notify the main loop that the data is ready to be processed, or we can notify the main loop and let it read the data. Its flows demonstrated below:
+In this model, application process system call sigaction and install a signal handler, the kernel will return immediately and the application process can do other works without being blocked. When the data is ready to be read, the SIGIO signal is generated for our process. We can either read the data from the signal handler by calling recvfrom and then notify the main loop that the data is ready to be processed, or we can notify the main loop and let it read the data. Its flows diagram demonstrated below:
 <img src="/assets/images/20160201/git.004.jpg" alt="" width="640" height="450" />
 
 #### Asynchronous I/O
 Asynchronous I/O is defined by the POSIX specification, it's an ideal model. In general, system call like aio_*  functions work by telling the kernel to start the operation and to notify us when the entire operation (including the copy of the data from the kernel to our buffer) is complete. The main difference between this model and the signal-driven I/O model in the previous section is that with signal-driven I/O, the kernel tells us when an I/O operation can be initiated, but with asynchronous I/O, the kernel tells us when an I/O operation is complete. Its flows demonstrated below:
 <img src="/assets/images/20160201/git.005.jpg" alt="" width="640" height="450" />
 
-After introduced those type of I/O models, we can identify them with the current hot-spots technologies such as epoll in linux and <a title="kqueue" href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/kqueue.2.html" target="_blank">kqueue</a> in OSX. They're more like the sugnal-driven model, only the <a title="IOCP" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365198(v=vs.85).aspx" target="_blank">IOCP on windows</a> implement the fifth model. See more: <a title="epoll和kqueue的实现原理" href="https://www.zhihu.com/question/20122137http://" target="_blank">from zhihu</a>.
+After introduced those type of I/O models, we can identify them with the current hot-spots technologies such as epoll in linux and <a title="kqueue" href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/kqueue.2.html" target="_blank">kqueue</a> in OSX. They're more like the signal-driven model, only the <a title="IOCP" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365198(v=vs.85).aspx" target="_blank">IOCP on windows</a> implement the fifth model. See more: <a title="epoll和kqueue的实现原理" href="https://www.zhihu.com/question/20122137http://" target="_blank">from zhihu</a>.
 
-Then I have to have a look at libuv, a cpp writen I/O library.
+Then have a look at libuv, an I/O library written in cpp.
 
 ## libuv
 
