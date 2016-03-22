@@ -378,13 +378,14 @@ You can now take a quiz to test whether you have already understand the event lo
 What you think about, what you want.
 
 ## References
-[1] <a target="_blank" href="http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/">http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/</a><br/>
-[2] <a target="_blank" href="http://hueniverse.com/2011/06/29/the-style-of-non-blocking/">http://hueniverse.com/2011/06/29/the-style-of-non-blocking/</a><br/>
-[3] <a target="_blank" href="http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/">http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/</a><br/>
-[4] <a target="_blank" href="http://stackoverflow.com/questions/1050222/concurrency-vs-parallelism-what-is-the-difference">http://stackoverflow.com/questions/1050222/concurrency-vs-parallelism-what-is-the-difference</a><br/>
-[5] <a target="_blank" href="http://blog.libtorrent.org/2012/10/asynchronous-disk-io/">http://blog.libtorrent.org/2012/10/asynchronous-disk-io/</a><br/>
-[6] <a target="_blank" href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/">http://prkr.me/words/2014/understanding-the-javascript-event-loop/</a><br/>
-[7] <a target="_blank" href="http://www.xmailserver.org/linux-patches/nio-improve.html">http://www.xmailserver.org/linux-patches/nio-improve.html</a><br/>
+[1] <a target="_blank" href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/">https://nodesource.com/blog/understanding-the-nodejs-event-loop/</a><br/>
+[2] <a target="_blank" href="http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/">http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/</a><br/>
+[3] <a target="_blank" href="http://hueniverse.com/2011/06/29/the-style-of-non-blocking/">http://hueniverse.com/2011/06/29/the-style-of-non-blocking/</a><br/>
+[4] <a target="_blank" href="http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/">http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/</a><br/>
+[5] <a target="_blank" href="http://stackoverflow.com/questions/1050222/concurrency-vs-parallelism-what-is-the-difference">http://stackoverflow.com/questions/1050222/concurrency-vs-parallelism-what-is-the-difference</a><br/>
+[6] <a target="_blank" href="http://blog.libtorrent.org/2012/10/asynchronous-disk-io/">http://blog.libtorrent.org/2012/10/asynchronous-disk-io/</a><br/>
+[7] <a target="_blank" href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/">http://prkr.me/words/2014/understanding-the-javascript-event-loop/</a><br/>
+[8] <a target="_blank" href="http://www.xmailserver.org/linux-patches/nio-improve.html">http://www.xmailserver.org/linux-patches/nio-improve.html</a><br/>
 
 Not yet finished, coming soon...
 
