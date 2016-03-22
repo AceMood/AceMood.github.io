@@ -226,7 +226,7 @@ Notice about the `uv_timer_again(handle)` code above, it differs the setTimeout 
 
 ###### setImmediate
 
-Node did almost the same job when you write javascript code as `setImmediate(callback)`. Definition of setImmediate is also in `lib/timer.js`, when call this method it will add private property `_immediateCallback` to process object so that C++ bindings can identify the callbacks' proxy registered, and finally return an immediate object (you can think it as another timeout object but without timeout property). Internally, `timer.js` maintain an array named immediateQueue, which contains all callbacks installed in current event loop iteration.
+Node did most of the same job with `setTimeout` when you write javascript code as `setImmediate(callback)`. Definition of setImmediate is also in `lib/timer.js`, when call this method it will add private property `_immediateCallback` to process object so that C++ bindings can identify the callbacks' proxy registered, and finally return an immediate object (you can think it as another timeout object but without timeout property). Internally, `timer.js` maintain an array named immediateQueue, which contains all callbacks installed in current event loop iteration.
 {% highlight javascript %}
   if (!process._needImmediateCallback) {
     process._needImmediateCallback = true;
@@ -294,11 +294,85 @@ So we knew that, in every event loop iteration, setImmediate callbacks would be 
 
 ###### process.nextTick
 
+process.nextTick might have the ability to hide its implementation **^_^**. I also <a target="_blank" href="https://github.com/nodejs/node/issues/5584">issued that</a> for node project to get more information. At last I closed it myself because I thought the author got a little confused about my question. Debug into the source code also make sense, but for more, I add logs in the source code and recompiled the whole project to see what happened.
+
+The entry point in `src/node.js`, there is a `startup.processNextTick` method that build the process.nextTick API. `process._tickCallback` is the callback function must be executed properly by C++ code (or if you use `require('domain')` process._tickDomainCallback would override it). Every time execute javascript code process.nextTick(callback), it maintains nextTickQueue and tickInfo objects for recording necessary information.
+
+`process._setupNextTick` is another important method in `src/node.js`, it map to a C++ binding Function named `SetupNextTick` in `src/node.cc`. In this method, it take the first argument and set it the `tick_callback_function` as a Persistent<Function> stored on Environment object. The tick_callback_function is what exactly executed the bound callbacks as in javascript code. You can see the snippet in node.js:
+{% highlight javascript %}
+// This tickInfo thing is used so that the C++ code in src/node.cc
+// can have easy access to our nextTick state, and avoid unnecessary
+// calls into JS land.
+const tickInfo = process._setupNextTick(_tickCallback, _runMicrotasks);
+
+function _tickCallback() {
+  var callback, args, tock;
+
+  do {
+    while (tickInfo[kIndex] < tickInfo[kLength]) {
+      tock = nextTickQueue[tickInfo[kIndex]++];
+      callback = tock.callback;
+      args = tock.args;
+      // Using separate callback execution functions allows direct
+      // callback invocation with small numbers of arguments to avoid the
+      // performance hit associated with using `fn.apply()`
+      _combinedTickCallback(args, callback);
+      if (1e4 < tickInfo[kIndex])
+        tickDone();
+    }
+    tickDone();
+    _runMicrotasks();
+    emitPendingUnhandledRejections();
+  } while (tickInfo[kLength] !== 0);
+}
+{% endhighlight %}
+
+And snippet in `node.cc`:
+{% highlight cpp %}
+env->SetMethod(process, "_setupNextTick", SetupNextTick);
+
+void SetupNextTick(const FunctionCallbackInfo<Value>& args) {
+  Environment* env = Environment::GetCurrent(args);
+
+  CHECK(args[0]->IsFunction());
+  CHECK(args[1]->IsObject());
+
+  env->set_tick_callback_function(args[0].As<Function>());
+  env->SetMethod(args[1].As<Object>(), "runMicrotasks", RunMicrotasks);
+
+  // Do a little housekeeping.
+  env->process_object()->Delete(
+      env->context(),
+      FIXED_ONE_BYTE_STRING(args.GetIsolate(), "_setupNextTick")).FromJust();
+
+  // code ignored
+
+  args.GetReturnValue().Set(Uint32Array::New(array_buffer, 0, fields_count));
+}
+{% endhighlight %}
+
+Then I find that `env()->tick_callback_function()` can be called from two places. First is the `Environment::KickNextTick` defined in `src/env.cc`. It called by `node::MakeCallback` in `src/node.cc`, which is only called by API internally. Second is `AsyncWrap::MakeCallback` defined in `src/async_wrap.cc`. As the author <a target="_blank" href="https://github.com/nodejs/node/issues/5584">mentioned that</a>, only the AsyncWrap::MakeCallback can be called by public. 
+
+I have to add some logs to see what happened. Only know the callbacks run at the end of a phase of the event loop is not enough for me. At last I find that every AsyncWrap is a wrapper for async operations, the TimerWrap inherited from AsyncWrap. When timeout handler execute the callback `OnTimeout`, it actually execute the `AsyncWrap::MakeCallback`. You can see the same code showed before in the setTimeout section:
+{% highlight cpp %}
+  static void OnTimeout(uv_timer_t* handle) {
+    TimerWrap* wrap = static_cast<TimerWrap*>(handle->data);
+    Environment* env = wrap->env();
+    HandleScope handle_scope(env->isolate());
+    Context::Scope context_scope(env->context());
+    wrap->MakeCallback(kOnTimeout, 0, nullptr);
+  }
+{% endhighlight %}
+
+In fact every stage in uv_run can be the last stage of event loop iteration, so like timeout, it check and execute the `env()->tick_callback_function()`. setImmediate ended in the internal called `node::MakeCallback` for doing the same work. And the last part of StartNodeInstance, `EmitBeforeExit(env)` and `EmitExit(env)` will also call the `node::MakeCallback` to ensure the tick_callback_function can be called.
+
 #### File I/O
 
 #### Network I/O
 
 ## Quiz
+
+You can now take a quiz to test whether you have already understand the event loop in Node.js totally. It mainly contains user asynchronous code. <a target="_blank" href="https://gist.github.com/a0viedo/0de050bb2249757c5def">Have a try.</a>
 
 ## Conclusion
 What you think about, what you want.
@@ -307,8 +381,10 @@ What you think about, what you want.
 [1] <a target="_blank" href="http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/">http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/</a><br/>
 [2] <a target="_blank" href="http://hueniverse.com/2011/06/29/the-style-of-non-blocking/">http://hueniverse.com/2011/06/29/the-style-of-non-blocking/</a><br/>
 [3] <a target="_blank" href="http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/">http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/</a><br/>
-[4] <a target="_blank" href=""></a><br/>
-[5] <a target="_blank" href=""></a><br/>
+[4] <a target="_blank" href="http://stackoverflow.com/questions/1050222/concurrency-vs-parallelism-what-is-the-difference">http://stackoverflow.com/questions/1050222/concurrency-vs-parallelism-what-is-the-difference</a><br/>
+[5] <a target="_blank" href="http://blog.libtorrent.org/2012/10/asynchronous-disk-io/">http://blog.libtorrent.org/2012/10/asynchronous-disk-io/</a><br/>
+[6] <a target="_blank" href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/">http://prkr.me/words/2014/understanding-the-javascript-event-loop/</a><br/>
+[7] <a target="_blank" href="http://www.xmailserver.org/linux-patches/nio-improve.html">http://www.xmailserver.org/linux-patches/nio-improve.html</a><br/>
 
 Not yet finished, coming soon...
 
