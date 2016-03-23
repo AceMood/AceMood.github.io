@@ -7,16 +7,14 @@ sc: life
 description: Golden Rules
 ---
 
-Be yourself, do not follow if you feel uncomfortable.
+[1] Be yourself, do not follow if you feel uncomfortable.
 
-Do not believe in what you have not confirmed.
+[2] Do not believe in what you have not confirmed.
 
-Be politely whenever, except the other is Sha.Bi.
+[3] Everyone is more or less selfish, keep near with the ones who like you.
 
-Everyone is more or less selfish, keep near with the ones who like you.
+[4] Life is short, do whatever you want.
 
-Life is short, do whatever you want.
+[5] To be the important one.
 
-To be the important one.
-
-Do not waste time any more. It's very very expensive.
+[6] Do not waste time any more. Time is very expensive.
