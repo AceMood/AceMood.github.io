@@ -450,7 +450,7 @@ void SetupNextTick(const FunctionCallbackInfo<Value>& args) {
 
 So we just need to search when the tick_callback_function() get called. After a while I find that `env()->tick_callback_function()` can be called from two places. First is the `Environment::KickNextTick` defined in `src/env.cc`. It called by `node::MakeCallback` in `src/node.cc`, which is only called by API internally. Second is `AsyncWrap::MakeCallback` defined in `src/async_wrap.cc`. It's also the same as the author <a target="_blank" href="https://github.com/nodejs/node/issues/5584">mentioned that</a>, only the AsyncWrap::MakeCallback can be called by public.
 
-I have added some logs to see what happened actually. Only know the callbacks run at the end of a phase of the event loop is not enough for me. At last I find that every AsyncWrap is a wrapper for async operations, the TimerWrap inherited from AsyncWrap. When timeout handler execute the callback `OnTimeout`, it actually execute the `AsyncWrap::MakeCallback`. You can see the same code showed before in the setTimeout section:
+I have added some logs to see what happened internally. Only know the callbacks run at the end  phase of each event loop is not enough for me. At last I find that every AsyncWrap is a wrapper for async operations, the TimerWrap inherited from AsyncWrap. When timeout handler execute the callback `OnTimeout`, it actually execute the `AsyncWrap::MakeCallback`. You can see the same code showed before in the setTimeout section:
 
 {% highlight cpp %}
   static void OnTimeout(uv_timer_t* handle) {
@@ -462,7 +462,7 @@ I have added some logs to see what happened actually. Only know the callbacks ru
   }
 {% endhighlight %}
 
-It's clear now that every stage in `uv_run` can be the last stage of event loop iteration, such like timeout, it check and execute the `env()->tick_callback_function()`. setImmediate ended in the internal called `node::MakeCallback`, node does the same work. And the last part of StartNodeInstance, `EmitBeforeExit(env)` and `EmitExit(env)` will also call the `node::MakeCallback` to ensure the tick_callback_function can be called before process exit.
+A dark day seems bright now, every stage in `uv_run` can be the last stage of event loop iteration, such like timeout, it check and execute the `env()->tick_callback_function()`. Another API setImmediate ended in the internal called `node::MakeCallback`, node does the same work. And the last part of StartNodeInstance, `EmitBeforeExit(env)` and `EmitExit(env)` will also call the `node::MakeCallback` to ensure the tick_callback_function can be called before process exit.
 
 ### File I/O
 
@@ -473,7 +473,7 @@ It's clear now that every stage in `uv_run` can be the last stage of event loop 
 You can now take a quiz to test whether you have already understand the event loop in Node.js totally. It mainly contains user asynchronous code. <a target="_blank" href="https://gist.github.com/a0viedo/0de050bb2249757c5def">Have a try.</a>
 
 # Conclusion
-What you think about, what you want.
+When called setTimeout and setImmediate, it schedules the callback function as a task to be executed in next event loop iteration. But nextTick won't. It will get called before current event loop iteration ended. Also we can foresee that if we called the nextTick recursively the timeout task have no chance to execute during such procedure.
 
 # References
 [1] <a target="_blank" href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/">https://nodesource.com/blog/understanding-the-nodejs-event-loop/</a><br/>
