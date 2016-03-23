@@ -131,9 +131,9 @@ As libuv described the <a target="_blank" href="http://docs.libuv.org/en/v1.x/de
 
 # Node
 
-Node is a popular and famous runtime for JavaScript, this article don't cover any primary technology about Node which you can find in any other technical books. If you want to, I'm willing to recommend you <a target="_blank" href="http://www.amazon.cn/Node-js%E5%AE%9E%E6%88%98-%E5%9D%8E%E7%89%B9%E4%BC%A6/dp/B00K4RUZHW/ref=sr_1_2?s=books&ie=UTF8&qid=1458129004&sr=1-2&keywords=nodejs">Node.js in Action</a> and <a target="_blank" href="http://www.amazon.cn/Mastering-Node-js-Pasquali-Sandro/dp/B00GX9HM8A/ref=sr_1_1?ie=UTF8&qid=1458129053&sr=8-1&keywords=mastering+node.js">Mastering Node.js</a>.
+Node is a popular and famous platform for JavaScript, this article don't cover any primary technology about Node which you can find in any other technical books. If you want to, I'm willing to recommend you <a target="_blank" href="http://www.amazon.cn/Node-js%E5%AE%9E%E6%88%98-%E5%9D%8E%E7%89%B9%E4%BC%A6/dp/B00K4RUZHW/ref=sr_1_2?s=books&ie=UTF8&qid=1458129004&sr=1-2&keywords=nodejs">Node.js in Action</a> and <a target="_blank" href="http://www.amazon.cn/Mastering-Node-js-Pasquali-Sandro/dp/B00GX9HM8A/ref=sr_1_1?ie=UTF8&qid=1458129053&sr=8-1&keywords=mastering+node.js">Mastering Node.js</a>.
 
-All Node source code shown in this article based on v4.4.0(LTS). 
+All Node source code shown in this article based on v4.4.0 (LTS). 
 
 ### Setup
 
