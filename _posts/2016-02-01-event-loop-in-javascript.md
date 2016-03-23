@@ -389,11 +389,11 @@ So we knew that, in every event loop iteration, setImmediate callbacks would be 
 
 ##### process.nextTick
 
-process.nextTick might have the ability to hide its implementation **^_^**. I have <a target="_blank" href="https://github.com/nodejs/node/issues/5584">issued that</a> for node project to get more information. At last I closed it myself because I thought the author got a little confused about my question. Debug into the source code also make sense, but for more, I add logs in the source code and recompiled the whole project to see what happened.
+process.nextTick might have the ability to hide its implementation **^_^**. I have <a target="_blank" href="https://github.com/nodejs/node/issues/5584">issued that</a> for node project to get more information. At last I closed it myself because I thought the author got a little confused about my question. Debug into the source code also make sense, I add logs in the source code and recompiled the whole project to see what happened.
 
 The entry point is in `src/node.js`, there is a `processNextTick` method that build the process.nextTick API. `process._tickCallback` is the callback function must be executed properly by C++ code (or if you use `require('domain')` it would be override by process._tickDomainCallback). Every time you called process.nextTick(callback) from your javascript code, it maintains nextTickQueue and tickInfo objects for recording necessary tick information.
 
-`process._setupNextTick` is another important method in `src/node.js`, it map to a C++ binding Function named `SetupNextTick` in `src/node.cc`. In this method, it take the first argument and set it the `tick_callback_function` as a Persistent<Function> stored on Environment object. The tick_callback_function is what exactly executed the bound callbacks as in javascript code. You can see the snippet from node.js.
+`process._setupNextTick` is another important method in `src/node.js`, it map to a C++ binding Function named `SetupNextTick` in `src/node.cc`. In this method, it take the first argument and set it the `tick_callback_function` as a Persistent<Function> stored on Environment object. The tick_callback_function is what exactly executed the bound callbacks as in javascript code. You can see the snippet from node.js. Notice that `_combinedTickCallback` invoke the bound callbacks.
 
 {% highlight javascript %}
 // This tickInfo thing is used so that the C++ code in src/node.cc
@@ -466,7 +466,11 @@ A dark day seems bright now, every stage in `uv_run` can be the last stage of ev
 
 ### File I/O
 
+Not yet finished, coming soon...
+
 ### Network I/O
+
+Not yet finished, coming soon...
 
 # Quiz
 
@@ -484,8 +488,6 @@ When called setTimeout and setImmediate, it schedules the callback function as a
 [6] <a target="_blank" href="http://blog.libtorrent.org/2012/10/asynchronous-disk-io/">http://blog.libtorrent.org/2012/10/asynchronous-disk-io/</a><br/>
 [7] <a target="_blank" href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/">http://prkr.me/words/2014/understanding-the-javascript-event-loop/</a><br/>
 [8] <a target="_blank" href="http://www.xmailserver.org/linux-patches/nio-improve.html">http://www.xmailserver.org/linux-patches/nio-improve.html</a><br/>
-
-Not yet finished, coming soon...
 
 <div class="note">
 <span class="note__caption">Note:</span>
