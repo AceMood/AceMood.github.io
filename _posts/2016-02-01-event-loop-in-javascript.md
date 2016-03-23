@@ -10,6 +10,8 @@ keywords: Node, non-blocking, event loop, javascript, setTimeout, nextTick, setI
 
 > There are only two kinds of languages: the ones people complain about and the ones nobody uses.     --- <a class="authorOrTitle" href="https://www.goodreads.com/author/show/64947.Bjarne_Stroustrup">Bjarne Stroustrup</a>
 
+# preface
+
 This can be a long article, even tedious. It's caused by <a title="problem" href="https://gist.github.com/mmalecki/1257394" target="_blank">a topic of process.nextTick</a>. Javascript developer or front-end engineer can face to setTimeout, setImmediate, nextTick everyday, but what the difference between them? Some seniors can tell:
 
 1. setImmediate is lack of implementations on browser side, only high-versioned Internet Explorer do this job.
@@ -20,7 +22,7 @@ At the very beginning, I tried to search for some answers such as <a href="https
 
 I can not tell how many people know the truth and want to explore it, if you know more information, please <a href="mailto:zmike86@gmail.com">contact me</a>, I'm waiting for more useful information.
 
-The first thing I want to say is about I/O.
+This article is not only about event loop, but also something like Non-blocking I/O. The first thing I want to say is about I/O Models.
 
 # I/O Models
 
