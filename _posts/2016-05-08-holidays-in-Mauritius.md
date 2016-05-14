@@ -36,15 +36,15 @@ description: Holidays in Mauritius
 
 拿到接待的欢迎函，喝了杯饮料后等待房间ready，此时会有中文接待过来讲解酒店的娱乐项目，餐厅以及毛里求斯的文化风情。不一会儿我们就拿到房卡，接待领着进入房间做了简单的电器使用介绍后便离去了，我们收拾一下后迫不及待的来到酒店海岸线，踩在细软的沙滩上，享受正午的阳光。
 
-<img src="/assets/images/20160508/DSC_0973.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0973.JPG" alt="" width="640" height="450" /><br/>
 
-<img src="/assets/images/20160508/DSC_0974.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0974.JPG" alt="" width="640" height="450" /><br/>
 
-<img src="/assets/images/20160508/DSC_0992.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0992.JPG" alt="" width="640" height="450" /><br/>
 
-<img src="/assets/images/20160508/DSC_0999.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0999.JPG" alt="" width="640" height="450" /><br/>
 
-<img src="/assets/images/20160508/DSC_1001.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1001.JPG" alt="" width="640" height="450" />
 
 少许片刻午饭时间，去了酒店内离房间最近的la kaze，一个小自助。不少老外在这里端着杯香槟躺在沙滩椅上。辣咖喱口味，味道很鲜美。
 
