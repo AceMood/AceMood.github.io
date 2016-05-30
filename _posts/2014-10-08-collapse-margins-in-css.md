@@ -8,7 +8,8 @@ description: Event loop in JavaScript
 keywords: collapse margin, css, block format context
 ---
 
-# Get Started
+# Specification from W3C
+
 8.3.1 Collapsing margins
 
 In CSS, the adjoining margins of two or more boxes (which might or might not be siblings) can combine to form a single margin. Margins that combine this way are said to collapse, and the resulting combined margin is called a collapsed margin.
