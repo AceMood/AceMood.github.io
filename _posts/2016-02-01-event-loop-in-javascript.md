@@ -481,7 +481,7 @@ When called setTimeout and setImmediate, it schedules the callback function as a
 
 # References
 [1] <a target="_blank" href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/">https://nodesource.com/blog/understanding-the-nodejs-event-loop/</a><br/>
-[2] <a target="_blank" href="http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html">http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html</a><br/>
+[2] <a target="_blank" href="http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html">http://www.masterraghu.com/subjects/np/introduction/unix-network-programming-v1.3/ch06lev1sec2.html</a><br/>
 [3] <a target="_blank" href="http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/">http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/</a><br/>
 [4] <a target="_blank" href="http://hueniverse.com/2011/06/29/the-style-of-non-blocking/">http://hueniverse.com/2011/06/29/the-style-of-non-blocking/</a><br/>
 [5] <a target="_blank" href="http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/">http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/</a><br/>
