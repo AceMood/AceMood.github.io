@@ -45,3 +45,9 @@ Pragma: private
 Last-Modified: $now // RFC1123 format
 ```
 
+But for IE7 and IE8, we tweaked two headers to get around some known bugs and instead sent:
+
+```
+Cache-Control: private, max-age=0
+Pragma: no-cache
+```
