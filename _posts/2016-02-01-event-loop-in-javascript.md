@@ -30,11 +30,11 @@ Operating System's I/O Models can be divided into five categories: Blocking I/O,
 
 ### Blocking I/O
 Blocking I/O is the most common model but with huge limitation, obviously it can only deal with one stream (stream can be file, socket or pipe). Its flows diagram demonstrated below:
-<img src="/assets/images/20160201/git.001.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160201/git.001.jpg" alt="" style="width: 100%; height: auto;" />
 
 ### Non-Blocking I/O
 Non-Blocking I/O, AKA busy looping, it can deal with multiple streams. The application process repeatedly call system to get the status of data, once any stream's data becomes ready, the application process block for data copy and then deal with the data available. But it has a big disadvantage for wasting CPU time. Its flows diagram sdemonstrated below:
-<img src="/assets/images/20160201/git.002.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160201/git.002.jpg" alt="" style="width: 100%; height: auto;" />
 
 ### I/O Multiplexing
 Select and poll are based on this type, see more about <a href="http://man7.org/linux/man-pages/man2/select.2.html" target="_blank">select</a> and <a href="http://man7.org/linux/man-pages/man2/poll.2.html" target="_blank">poll</a>. I/O Multiplexing retains the advantage of Non-Blocking I/O, it can also deal with multiple streams, but it's also one of the blocking types. Call select (or poll) will block application process until any stream becomes ready. And even worse, it introduce another system call (recvfrom). 
@@ -42,15 +42,15 @@ Select and poll are based on this type, see more about <a href="http://man7.org/
 Notes: Another closely related I/O model is to use multi-threading with blocking I/O. That model very closely resembles the model described above, except that instead of using select to block on multiple file descriptors, the program uses multiple threads (one per file descriptor), and each thread is then free to call blocking system calls like recvfrom. 
 
 Its flows diagram demonstrated below:
-<img src="/assets/images/20160201/git.003.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160201/git.003.jpg" alt="" style="width: 100%; height: auto;" />
 
 ### Signal-driven I/O
 In this model, application process system call sigaction and install a signal handler, the kernel will return immediately and the application process can do other works without being blocked. When the data is ready to be read, the SIGIO signal is generated for our process. We can either read the data from the signal handler by calling recvfrom and then notify the main loop that the data is ready to be processed, or we can notify the main loop and let it read the data. Its flows diagram demonstrated below:
-<img src="/assets/images/20160201/git.004.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160201/git.004.jpg" alt="" style="width: 100%; height: auto;" />
 
 ### Asynchronous I/O
 Asynchronous I/O is defined by the POSIX specification, it's an ideal model. In general, system call like aio_*  functions work by telling the kernel to start the operation and to notify us when the entire operation (including the copy of the data from the kernel to our buffer) is complete. The main difference between this model and the signal-driven I/O model in the previous section is that with signal-driven I/O, the kernel tells us when an I/O operation can be initiated, but with asynchronous I/O, the kernel tells us when an I/O operation is complete. Its flows demonstrated below:
-<img src="/assets/images/20160201/git.005.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160201/git.005.jpg" alt="" style="width: 100%; height: auto;" />
 
 After introduced those type of I/O models, we can identify them with the current hot-spots technologies such as epoll in linux and <a title="kqueue" href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/kqueue.2.html" target="_blank">kqueue</a> in OSX. They're more like the I/O multiplexing model, only the <a title="IOCP" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365198(v=vs.85).aspx" target="_blank">IOCP on windows</a> implement the fifth model. See more: <a title="epoll和kqueue的实现原理" href="https://www.zhihu.com/question/20122137http://" target="_blank">from zhihu</a>.
 
@@ -125,7 +125,7 @@ int uv_run(uv_loop_t* loop, uv_run_mode mode) {
 {% endhighlight %}
 
 Every time runtime do an event loop iteration, it executes the ordered code as figure below, and we can know what kind of callbacks would be called during each event loop iteration. 
-<img src="/assets/images/20160201/git.006.jpg" alt="event loop iteration" width="640" height="600" />
+<img src="/assets/images/20160201/git.006.jpg" alt="event loop iteration" style="width: 100%; height: auto;" />
 
 As libuv described the <a target="_blank" href="http://docs.libuv.org/en/v1.x/design.html">underline principle</a>, timer relative callbacks will be called in the `uv__run_timers(loop)` step, but it don't mention about `setImmediate` and `process.nextTick`. It's reasonable obviously, libuv is lower layer of Node, so logic in Node will be taken account in itself (more flexible). After diving into the source code of Node project, we can see what happened when setTimeout/setInterval, setImmediate and process.nextTick.
 
@@ -480,15 +480,15 @@ You can now take a quiz to test whether you have already understand the event lo
 When called setTimeout and setImmediate, it schedules the callback function as a task to be executed in next event loop iteration. But nextTick won't. It will get called before current event loop iteration ended. Also we can foresee that if we called the nextTick recursively the timeout task have no chance to execute during such procedure.
 
 # References
-[1] <a target="_blank" href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/">https://nodesource.com/blog/understanding-the-nodejs-event-loop/</a><br/>
-[2] <a target="_blank" href="http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html">http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html</a><br/>
-[3] <a target="_blank" href="http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/">http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/</a><br/>
-[4] <a target="_blank" href="http://hueniverse.com/2011/06/29/the-style-of-non-blocking/">http://hueniverse.com/2011/06/29/the-style-of-non-blocking/</a><br/>
-[5] <a target="_blank" href="http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/">http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/</a><br/>
-[6] <a target="_blank" href="http://stackoverflow.com/questions/1050222/concurrency-vs-parallelism-what-is-the-difference">http://stackoverflow.com/questions/1050222/concurrency-vs-parallelism-what-is-the-difference</a><br/>
-[7] <a target="_blank" href="http://blog.libtorrent.org/2012/10/asynchronous-disk-io/">http://blog.libtorrent.org/2012/10/asynchronous-disk-io/</a><br/>
-[8] <a target="_blank" href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/">http://prkr.me/words/2014/understanding-the-javascript-event-loop/</a><br/>
-[9] <a target="_blank" href="http://www.xmailserver.org/linux-patches/nio-improve.html">http://www.xmailserver.org/linux-patches/nio-improve.html</a><br/>
+[1] <a target="_blank" href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/">understanding-the-nodejs-event-loop/</a><br/>
+[2] <a target="_blank" href="http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html">introduction/unix-network-programming-v1.3</a><br/>
+[3] <a target="_blank" href="http://khan.io/2015/02/25/the-event-loop-and-non-blocking-io-in-node-js/">the-event-loop-and-non-blocking-io-in-node-js</a><br/>
+[4] <a target="_blank" href="http://hueniverse.com/2011/06/29/the-style-of-non-blocking/">the-style-of-non-blocking</a><br/>
+[5] <a target="_blank" href="http://blog.mixu.net/2011/02/01/understanding-the-node-js-event-loop/">understanding-the-node-js-event-loop</a><br/>
+[6] <a target="_blank" href="http://stackoverflow.com/questions/1050222/concurrency-vs-parallelism-what-is-the-difference">concurrency-vs-parallelism-what-is-the-difference</a><br/>
+[7] <a target="_blank" href="http://blog.libtorrent.org/2012/10/asynchronous-disk-io/">asynchronous-disk-io</a><br/>
+[8] <a target="_blank" href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/">understanding-the-javascript-event-loop</a><br/>
+[9] <a target="_blank" href="http://www.xmailserver.org/linux-patches/nio-improve.html">linux-patches/nio-improve</a><br/>
 
 <div class="note">
 <span class="note__caption">Note:</span>

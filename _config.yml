@@ -13,7 +13,7 @@ kramdown:
     input: GFM
     hard_wrap: false
 highlighter: rouge
-paginate: 8
+paginate: 5
 lsi: false
 quiet: false
 excerpt_separator: "\n\n"
@@ -22,3 +22,17 @@ gems:
     - kramdown
     - rouge
     - jekyll-paginate
+
+# List of links in the navigation bar
+nav-links:
+    Home: ""
+    Archive: "archive"
+    About Me: "aboutme"
+
+# Exclude these files from production site
+exclude:
+    - Gemfile
+    - Gemfile.lock
+    - LICENSE
+    - README.md
+    - CNAME
