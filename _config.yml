@@ -13,7 +13,7 @@ kramdown:
     input: GFM
     hard_wrap: false
 highlighter: rouge
-paginate: 5
+paginate: 8
 lsi: false
 quiet: false
 excerpt_separator: "\n\n"
