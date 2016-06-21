@@ -12,3 +12,9 @@
 .note__content--normal {
     color: #222;
 }
+
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
