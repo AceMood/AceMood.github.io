@@ -5,14 +5,15 @@ tagline: by AceMood
 categories: Front-end
 sc: fe
 description: Cache efficiency exercise
-keywords: web performance, facebook
+keywords: web performance, facebook, http cache
 ---
 
 # preface
 
-It's reprinted from [post of Facebook engineering team](https://code.facebook.com/posts/964122680272229/web-performance-cache-efficiency-exercise/). 
-I must say that Facebook web team have an excellent option in a perfect environment to help them improve their web performance. Their solutions in web
-architecture inspire me from time to time. I strongly recommend every web developer to read their blogs and dive into their solutions.
+**This article was reprinted from [post of Facebook engineering team](https://code.facebook.com/posts/964122680272229/web-performance-cache-efficiency-exercise/).
+I have to say that Facebook web team have an excellent opinion in a perfect environment to help them improve their
+web performance. Their solutions in web architecture inspire me from time to time. I strongly recommend every web
+developer to read their blogs and dive into their solutions.**
 
 # Web performance: Cache efficiency exercise
 
