@@ -1,9 +1,29 @@
 <!-- FOOTER  -->
-<div id="footer_wrap" class="outer">
-    <footer class="inner">
-        <p>&copy; All rights reserved. By AceMood 2015. </p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-    </footer>
-</div>
-</body>
-</html>
+<!--<div id="footer_wrap" class="outer">-->
+    <!--<footer class="inner">-->
+        <!--<p>&copy; All rights reserved. By AceMood 2015. </p>-->
+        <!--<p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>-->
+    <!--</footer>-->
+<!--</div>-->
+
+<footer class="footer">
+    <div class="container footerBox">
+        <p class="copyright text-muted">
+            Copyright&nbsp;&copy;&nbsp; {{ 2015 }}
+            {% if site.pretty-url %} &nbsp;&bull;&nbsp;
+            <a href="{{ site.url }}">{{ site.pretty-url }}</a>
+            {% endif %}
+        </p>
+
+        <p class="copyright text-muted">
+            All rights reserved. By AceMood 2015.
+        </p>
+
+        <!-- This is my 'Open Source' work. So, please don't remove the below copyright content. :) -->
+        <p class="text-muted">
+            Theme by
+            <a href="https://github.com/bchetty/jekyllBasic">bchetty</a>
+        </p>
+
+    </div>
+</footer>

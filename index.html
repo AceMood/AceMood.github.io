@@ -6,50 +6,44 @@ comment: false
 sc: author
 ---
 
-<!-- MAIN CONTENT -->
-<div id="main_content_wrap" class="outer">
-    <section id="main_content" class="inner">
-
-        <!-- POSTS -->
-        {% for post in paginator.posts %}
-        <h3>
-            <a class="anchor" href="{{ post.url }}" aria-hidden="true">
-                <span aria-hidden="true" class="octicon octicon-link"></span>
-                {{ post.title }}
-            </a>
-        </h3>
-        <span>{{ post.date | date: "%Y/%m/%d" }}</span>
-        {% for cat in post.categories %}
-            <span class="meta-info">
-                <span class="octicon octicon-file-directory"></span>
-                <a href="/categories/#{{ cat }}" title="{{ cat }}">{{ cat }}</a>
-            </span>
-        {% endfor %}
-        <p>{{ post.excerpt | strip_html | strip }}</p>
-        {% endfor %}
-
-        <!--
-        <li class="repo-list-item">
-            <h3 class="repo-list-name">
-                <a href="{{ post.url }}">{{ post.title }}</a>
+<!-- Main component for a primary marketing message or call to action -->
+<div class="posts-list">
+    {% for post in paginator.posts %}
+    <article class="postPreviewBox">
+        <a href="{{ post.url | prepend: site.baseurl }}">
+            <h2 class="postTitle">{{ post.title }}</h2>
+            {% if post.subtitle %}
+            <h3 class="postSubTitle">
+                {{ post.subtitle }}
             </h3>
-            <p class="repo-list-description">
-                {{ post.excerpt | strip_html | strip }}
-            </p>
-            <p class="repo-list-meta">
-                <span class="meta-info">
-                    <span class="octicon octicon-calendar"></span> {{ post.date | date: "%Y/%m/%d" }}
-                </span>
-                {% for cat in post.categories %}
-                    <span class="meta-info">
-                        <span class="octicon octicon-file-directory"></span>
-                        <a href="/categories/#{{ cat }}" title="{{ cat }}">{{ cat }}</a>
-                    </span>
-                {% endfor %}
-            </p>
-        </li>
-        -->
+            {% endif %}
+        </a>
 
-        <!-- Guide -->
-    </section>
+        <p class="postMeta">
+            Posted on {{ post.date | date: "%B %-d, %Y" }}
+        </p>
+
+        <div class="postPreviewContent">
+            {{ post.content | truncatewords: 50 | strip_html | xml_escape}}
+            <br/><br/>
+            <a href="{{ post.url | prepend: site.baseurl }}" class="readMoreLink">&raquo; [Read&nbsp;More]</a>
+        </div>
+
+    </article>
+    {% endfor %}
 </div>
+
+{% if paginator.total_pages > 1 %}
+<ul class="pager main-pager">
+    {% if paginator.previous_page %}
+    <li class="previous">
+        <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
+    </li>
+    {% endif %}
+    {% if paginator.next_page %}
+    <li class="next">
+        <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
+    </li>
+    {% endif %}
+</ul>
+{% endif %}
