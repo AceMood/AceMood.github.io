@@ -25,7 +25,7 @@ It can deal with tiny scale website as we do not need to include many js and css
 There have someone [introduce the issue](http://jamie-wong.com/2014/11/29/the-js-packaging-problem/) and try to resolve it.
 From his article, there is no perfect solution at present. How you packaging your static resources depend on your visitor, the complexity of your website and so on. We now just discuss the large scale website such as Facebook.com and Google Map. 
 
-As I have reprinted the [browser cache](https://code.facebook.com/posts/964122680272229/web-performance-cache-efficiency-exercise/) article, we should consider the cache strategy and utilize it to do its best work. Also we should not just minimum the count of requests of one main page, we should consider the whole website pages and even several websites served on one server, which shared the common library and images. 
+As I have reprinted the [browser cache](https://code.facebook.com/posts/964122680272229/web-performance-cache-efficiency-exercise/) article, we should consider the cache strategy and utilize it to do its best work. Also we should consider the whole website pages which shared the common library and images served on your server rather than only minimum the count of requests of one main page. 
 
 # Current Module Loader in Browser
 
