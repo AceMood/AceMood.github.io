@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Problems with packaging
+title: Issues with packaging
 tagline: by AceMood
 categories: JavaScript
 sc: js
-description: Problems with packaging
+description: Issues with packaging
 keywords: javascript, packaging resources, bundle tools, web performance optimize
 ---
 
@@ -18,7 +18,7 @@ As [YUI Blog 34 golden rules](https://developer.yahoo.com/performance/rules.html
 <img src="/assets/images/20160528/pack.001.jpg" alt="" style="width: 100%; height: auto;" /><br/>
 <img src="/assets/images/20160528/pack.002.jpg" alt="" style="width: 100%; height: auto;" /><br/>
 
-It can deal with tiny scale website as we do not need to include many js and css external files. As website (or webapp) grows rapidly recent years (most website is larger than 1 MB), we must review the packaging problem from Front-end engineering aspect. Also modular development of Front-end brings new issues to our packaging process.
+It can deal with tiny scale website as we do not need to include many js and css external files. As websites (or webapps) grow rapidly recent years (most website is larger than 1 MB), we must review the packaging issue from Front-end engineering aspect. Also modular development of Front-end brings new issues to our packaging process.
 
 # Packaging Strategy
 
