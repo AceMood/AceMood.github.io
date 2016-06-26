@@ -22,30 +22,30 @@ description: Holidays in Mauritius
 
 毛里求斯航空一水的蓝色主题。
 
-<img src="/assets/images/20160508/DSC_0971.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0971.jpg" alt="" style="width:100%; height=auto" />
 
 这是一家坐落在东岸，离鹿岛（ile cerf）只有10分钟车程的5星酒店，内部环境很好，接待也很有礼貌，其中有至少3名是中国接待。刚进入酒店休息区就被外面宜人的景色吸引住，此时天空已放晴。
 
-<img src="/assets/images/20160508/DSC_0990.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0990.jpg" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_0972.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0972.jpg" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_0983.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0983.jpg" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_0985.jpg" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0985.jpg" alt="" style="width:100%; height=auto" />
  
 
 拿到接待的欢迎函，喝了杯饮料后等待房间ready，此时会有中文接待过来讲解酒店的娱乐项目，餐厅以及毛里求斯的文化风情。不一会儿我们就拿到房卡，接待领着进入房间做了简单的电器使用介绍后便离去了，我们收拾一下后迫不及待的来到酒店海岸线，踩在细软的沙滩上，享受正午的阳光。
 
-<img src="/assets/images/20160508/DSC_0973.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0973.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_0974.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0974.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_0992.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0992.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_0999.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_0999.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_1001.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1001.JPG" alt="" style="width:100%; height=auto" />
 
 少许片刻午饭时间，去了酒店内离房间最近的la kaze，一个小自助。不少老外在这里端着杯香槟躺在沙滩椅上。辣咖喱口味，味道很鲜美。
 
@@ -57,18 +57,18 @@ description: Holidays in Mauritius
 
 第二天的下午，我来到酒店提供的boat house，这里可以玩不少水上项目，water ski是需要游泳比较好的，但是滑翔伞、脚踏船、玻璃船底都不需要。贴几张和小伙伴在海上玩耍的照片。
 
-<img src="/assets/images/20160508/DSC_1023.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1023.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_1032.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1032.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_1045.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1045.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_1048.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1048.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_1059.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1059.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_1061.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1061.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_1062.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1062.JPG" alt="" style="width:100%; height=auto" />
 
-<img src="/assets/images/20160508/DSC_1063.JPG" alt="" width="640" height="450" />
+<img src="/assets/images/20160508/DSC_1063.JPG" alt="" style="width:100%; height=auto" />
