@@ -20,7 +20,8 @@ img {
 }
 
 .img--small {
-    display: inline-block;
-    width: 100%;
+    display: block;
+    width: 70%;
     height: auto;
+    margin: 0 auto;
 }
