@@ -44,7 +44,7 @@ And thr pack rule as:
 ```
 {
   pack: [
-    '/res/bundle.js': ['lib/base.js', ''mod/qrcode.js'']
+    '/res/bundle.js': ['lib/base.js', 'mod/qrcode.js']
   ]
 }
 ```
