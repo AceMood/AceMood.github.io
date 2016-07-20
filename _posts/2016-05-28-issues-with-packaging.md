@@ -15,8 +15,8 @@ keywords: javascript, packaging resources, bundle tools, web performance optimiz
 
 As [YUI Blog 34 golden rules](https://developer.yahoo.com/performance/rules.html) had mentioned that, make minimum requests can improve Front-end performance, we often bundle javascript files into less files, so do css files. It works well when we do not have more requirements on our website. For example, ten years before, we can easily move all javascript file into one big bundle as demonstrated below:
 
-<img src="/assets/images/20160528/pack.001.jpg" alt="" style="width: 100%; height: auto;" /><br/>
-<img src="/assets/images/20160528/pack.002.jpg" alt="" style="width: 100%; height: auto;" /><br/>
+<img src="/assets/images/20160528/pack.001.jpg" alt="" style="width: 60%; height: auto;" /><br/>
+<img src="/assets/images/20160528/pack.002.jpg" alt="" style="width: 60%; height: auto;" /><br/>
 
 It can deal with tiny scale website as we do not need to include many js and css external files. As websites (or webapps) grow rapidly recent years (most website is larger than 1 MB), we must review the packaging issue from Front-end engineering aspect. Also modular development of Front-end brings new issues to our packaging process.
 
@@ -49,16 +49,33 @@ And thr pack rule as:
 }
 ```
 
-But, be aware of that, how we could do the packaging work if `mod/qrcode.js` depends on `base/head.js` and `base/head.js` depends on `lib/base.js`? Sone one may tell if we construct our directory clearly and make a convention to that, we can avoid this situation. Of course, we can make some rules to avoid that, but it's not flexible enough, we can not decide how the engineer build their source code directory and how they write the package rules in configuration file.
+But, be aware of that, how we could do the packaging work if `mod/qrcode.js` depends on `base/head.js` and `base/head.js` depends on `lib/base.js`? Someone may tell if we construct our directory clearly and make a convention to that, we can avoid this situation. Of course, we can make some rules to avoid that, but it's not flexible enough, we can not decide how the engineer build their source code directory and how they write the package rules in configuration file.
 
-So, it is very important our Module Loader in Browser side support the mess-ordered definition of javascript modules, for example:
+So, it is very important that our Module Loader in Browser side support the mess-ordered definition of javascript modules, for example:
 
 Imagine we have `a`, `b`, `c` three modules,
 
 ```
 define('a', function(require, module, exports) {
-
+  exports.key = 'a';
 })
 ```
 
-# Further Reading
+```
+define('b', function(require, module, exports) {
+  var mod_a = require('a');
+  exports.key = mod_a.key + 'b';
+})
+```
+
+```
+define('c', function(require, module, exports) {
+  var mod_b = require('b');
+  exports.key = mod_b.key + 'c';
+})
+```
+
+Normally, we can only bundle the three files in `a->b->c` order, but it really depends on how we implement our Module Loader. When `define` a module, we do not fetch its dependencies immediately, we can extract its dpendencies (or from the reource map object) without fetching it. Only when the entry point module executed `kernel.exec`, we fetch all dependencies. 
+
+# Conclusion
+
