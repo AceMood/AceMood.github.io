@@ -15,8 +15,8 @@ keywords: javascript, packaging resources, bundle tools, web performance optimiz
 
 As [YUI Blog 34 golden rules](https://developer.yahoo.com/performance/rules.html) had mentioned that, make minimum requests can improve Front-end performance, we often bundle javascript files into less files, so do css files. It works well when we do not have more requirements on our website. For example, ten years before, we can easily move all javascript file into one big bundle as demonstrated below:
 
-<img src="/assets/images/20160528/pack.001.jpg" alt="" style="width: 60%; height: auto;" /><br/>
-<img src="/assets/images/20160528/pack.002.jpg" alt="" style="width: 60%; height: auto;" /><br/>
+<img src="/assets/images/20160528/pack.001.jpg" class="img--small" /><br/>
+<img src="/assets/images/20160528/pack.002.jpg" class="img--small" /><br/>
 
 It can deal with tiny scale website as we do not need to include many js and css external files. As websites (or webapps) grow rapidly recent years (most website is larger than 1 MB), we must review the packaging issue from Front-end engineering aspect. Also modular development of Front-end brings new issues to our packaging process.
 
@@ -75,7 +75,10 @@ define('c', function(require, module, exports) {
 })
 ```
 
-Normally, we can only bundle the three files in `a->b->c` order, but it really depends on how we implement our Module Loader. When `define` a module, we do not fetch its dependencies immediately, we can extract its dpendencies (or from the reource map object) without fetching it. Only when the entry point module executed `kernel.exec`, we fetch all dependencies. 
+Normally, we can only bundle the three files in `a->b->c` order, but it really depends on how we implement our Module Loader. When `define` a module, we do not fetch its dependencies immediately, we can extract its dpendencies (or from the reource map object) without fetching it. Only when the entry point module executed `kernel.exec`, we fetch all dependencies. See more [implementation in kernel.js](https://github.com/AceMood/kerneljs/blob/master/lib/Module.js)
 
 # Conclusion
 
+1. JavaScript Module Loader should not prefetch module's dependencies until needed. Not only for performance, but also for packaging strategy.
+
+2. Packaging Strategy is an important issue when we consider the Front-end engineering. Simple enough, we can let developers take over this task through config package rules, but for flexible and less error-proned, we should build an Automated Packaging System (A.P.S) to analyze the access logs of our website and do the packaging automatically.

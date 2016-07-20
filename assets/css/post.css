@@ -14,7 +14,13 @@
 }
 
 img {
-    display: block;
+    display: inline-block;
+    width: 100%;
+    height: auto;
+}
+
+.img--small {
+    display: inline-block;
     width: 100%;
     height: auto;
 }
