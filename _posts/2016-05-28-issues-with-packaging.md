@@ -22,13 +22,43 @@ It can deal with tiny scale website as we do not need to include many js and css
 
 # Packaging Strategy
 
-There have someone [introduce the issue](http://jamie-wong.com/2014/11/29/the-js-packaging-problem/) and try to resolve it.
-From his article, there is no perfect solution at present. How you packaging your static resources depend on your visitor, the complexity of your website and so on. We now just discuss the large scale website such as Facebook.com and Google Map. 
+There have some author [introduce the issue](http://jamie-wong.com/2014/11/29/the-js-packaging-problem/) and try to resolve it.
+From this article, there is no perfect solution at present. We now just discuss the large scale website such as Facebook.com and Google Map. How you packaging your static resources mostly depend on the engineers in your team, they config the package rules and decide which ones can be merged into one file. For further, we can do the packaging tasks into an automatical system according to the logs of your website. 
 
 As I have reprinted the [browser cache](https://code.facebook.com/posts/964122680272229/web-performance-cache-efficiency-exercise/) article, we should consider the cache strategy and utilize it to do its best work. Also we should consider the whole website pages which shared the common library and images served on your server rather than only minimum the count of requests of one main page. 
 
 # Current Module Loader in Browser
 
+For simple example, we have five js resources (after analyzed) in a HTML file, such as:
 
+```
+require_js('lib/base.js');
+require_js('base/navbar.js');
+require_js('base/head.js');
+require_js('mod/qrcode.js');
+require_js('page/main.js');
+```
+
+And thr pack rule as:
+
+```
+{
+  pack: [
+    '/res/bundle.js': ['lib/base.js', ''mod/qrcode.js'']
+  ]
+}
+```
+
+But, be aware of that, how we could do the packaging work if `mod/qrcode.js` depends on `base/head.js` and `base/head.js` depends on `lib/base.js`? Sone one may tell if we construct our directory clearly and make a convention to that, we can avoid this situation. Of course, we can make some rules to avoid that, but it's not flexible enough, we can not decide how the engineer build their source code directory and how they write the package rules in configuration file.
+
+So, it is very important our Module Loader in Browser side support the mess-ordered definition of javascript modules, for example:
+
+Imagine we have `a`, `b`, `c` three modules,
+
+```
+define('a', function(require, module, exports) {
+
+})
+```
 
 # Further Reading
