@@ -64,7 +64,7 @@ define('a', function(require, module, exports) {
 ```
 define('b', function(require, module, exports) {
   var mod_a = require('a');
-  exports.key = mod_a.key + 'b';
+  exports.key = mod_a.key + 'b'; 
 })
 ```
 
@@ -75,7 +75,15 @@ define('c', function(require, module, exports) {
 })
 ```
 
-Normally, we can only bundle the three files in `a->b->c` order, but it really depends on how we implement our Module Loader. When `define` a module, we do not fetch its dependencies immediately, we can extract its dpendencies (or from the reource map object) without fetching it. Only when the entry point module executed `kernel.exec`, we fetch all dependencies. See more [implementation in kernel.js](https://github.com/AceMood/kerneljs/blob/master/lib/Module.js)
+Normally, we can only bundle the three files in `a->b->c` order, but it really depends on how we implement our Module Loader. When `define` a module, we do not fetch its dependencies immediately, we can extract its dpendencies (or from the reource map object) without fetching it (leave it later). Only when the entry point module executed `kernel.exec`, we fetch all dependencies. See more [implementation in kernel.js](https://github.com/AceMood/kerneljs/blob/master/lib/Module.js).
+
+With such implementation, we can output the module in mess order (in case we encounter the packaging issue).
+
+```html
+<script src="a.js"></script>
+<script src="c.js"></script>
+<script src="b.js"></script>
+```
 
 # Conclusion
 
