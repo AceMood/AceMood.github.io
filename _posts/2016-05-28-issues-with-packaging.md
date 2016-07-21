@@ -54,21 +54,21 @@ But, be aware of that, how we could do the packaging work if `mod/qrcode.js` dep
 So, it is very important that our Module Loader in Browser side support the mess-ordered definition of javascript modules, for example:
 
 Imagine we have `a`, `b`, `c` three modules,
-
-```
+ 
+``` javascript
 define('a', function(require, module, exports) {
   exports.key = 'a';
 })
 ```
 
-```
+``` javascript
 define('b', function(require, module, exports) {
   var mod_a = require('a');
   exports.key = mod_a.key + 'b'; 
 })
 ```
 
-```
+``` javascript
 define('c', function(require, module, exports) {
   var mod_b = require('b');
   exports.key = mod_b.key + 'c';
