@@ -14,7 +14,14 @@
 }
 
 img {
-    display: block;
+    display: inline-block;
     width: 100%;
     height: auto;
+}
+
+.img--small {
+    display: block;
+    width: 70%;
+    height: auto;
+    margin: 0 auto;
 }
