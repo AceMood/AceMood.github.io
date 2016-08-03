@@ -36,33 +36,45 @@ ways to combine the three elements (such as web component).
 
 Also we can take a look at the directories of the whole project,
 
-``` javascript
--- template
----- index.php
----- list.php
----- detail.php
----- feedback.php
--- third_party
----- lib
------- zepto.js
------- underscore.js
------- backbone.js
----- vi
------- reset.less
------- grid.less
--- static
----- images
----- js
------- index.js
------- list.js
------- detail.js
----- css
--- widget
----- banner
----- navbar
----- footer
----- chatter
----- imageloader
+```
+- template
+--- index.php
+--- list.php
+--- detail.php
+--- feedback.php
+- third_party
+--- lib
+----- zepto.js
+----- underscore.js
+----- backbone.js
+--- vi
+----- reset.less
+----- grid.less
+- static
+--- images
+----- logo.png
+----- bg.png
+--- js
+----- index.js
+----- list.js
+----- detail.js
+--- css
+- widget
+--- banner
+----- banner.js
+----- banner.less
+----- banner.ejs
+--- navbar
+----- navbar.js
+----- navbar.less
+--- footer
+----- footer.js
+----- footer.less
+--- chatter
+----- chatter.js
+----- chatter.less
+--- imageloader
+----- imageloader.js
 ```
 
 # Component based development
