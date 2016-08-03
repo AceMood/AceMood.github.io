@@ -45,6 +45,7 @@ one hundred files in one page at any position. For example, a developer may writ
 ```
 
 But notice that, we have at least three problems here until now:
+
 * the `reset.css` may be already included at any other place, it can cause duplicated resource loaded and waste Browser time. so dose `zepto.js`.
 * we want all the style at the top of the page and all the js at the bottom of the page
 * `navbar.js` may depend on `zepto.js`, we have to declare the script tag in right order manually
