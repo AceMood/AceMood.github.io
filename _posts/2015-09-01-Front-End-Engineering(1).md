@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Static Resource Management
+title: Front-End-Engineering
 tagline: by AceMood
 categories: Front-end
 sc: fe
-description: Static Resource Management
+description: Build Tools
 keywords: engineering, front-end, static resource management, soi, neo-core
 ---
 
