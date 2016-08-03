@@ -19,8 +19,8 @@ __It can be a really big topic, I confirm that it not only contains issue like d
 
 Nowadays, we write more and more Front-end code in the page. We may include external javascript and stylesheet more than 
 one hundred files in one page at any position. 
-
 For example,
+
 ``` html
 <link rel="stylesheet" type="text/css" href="navbar.css" />
 <div class="navbar">
