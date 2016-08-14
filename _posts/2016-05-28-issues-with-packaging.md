@@ -11,7 +11,7 @@ keywords: javascript, packaging resources, bundle tools, web performance optimiz
 > Release Engineering is the part of the software engineering process that is most akin to herding cats.
 > --- <a class="authorOrTitle" href="https://www.facebook.com/chuckr">Chuck Rossi</a>
 
-# Preface
+## Preface
 
 As [YUI Blog 34 golden rules](https://developer.yahoo.com/performance/rules.html) had mentioned that, make minimum requests can improve Front-end performance, we often bundle javascript files into less files, so do css files. It works well when we do not have more requirements on our website. For example, ten years before, we can easily move all javascript file into one big bundle as demonstrated below:
 
@@ -20,14 +20,14 @@ As [YUI Blog 34 golden rules](https://developer.yahoo.com/performance/rules.html
 
 It can deal with tiny scale website as we do not need to include many js and css external files. As websites (or webapps) grow rapidly recent years (most website is larger than 1 MB), we must review the packaging issue from Front-end engineering aspect. Also modular development of Front-end brings new issues to our packaging process.
 
-# Packaging Strategy
+## Packaging Strategy
 
 There have some author [introduce the issue](http://jamie-wong.com/2014/11/29/the-js-packaging-problem/) and try to resolve it.
 From this article, there is no perfect solution at present. We now just discuss the large scale website such as Facebook.com and Google Map. How you packaging your static resources mostly depend on the engineers in your team, they config the package rules and decide which ones can be merged into one file. For further, we can do the packaging tasks into an automatical system according to the logs of your website. 
 
 As I have reprinted the [browser cache](https://code.facebook.com/posts/964122680272229/web-performance-cache-efficiency-exercise/) article, we should consider the cache strategy and utilize it to do its best work. Also we should consider the whole website pages which shared the common library and images served on your server rather than only minimum the count of requests of one main page. 
 
-# Current Module Loader in Browser
+## Current Module Loader in Browser
 
 For simple example, we have five js resources (after analyzed) in a HTML file, such as:
 
@@ -85,7 +85,7 @@ With such implementation, we can output the module in mess order (in case we enc
 <script src="b.js"></script>
 ```
 
-# Conclusion
+## Conclusion
 
 1. JavaScript Module Loader should not prefetch module's dependencies until needed. Not only for performance, but also for packaging strategy.
 
