@@ -115,32 +115,9 @@ As I see, all javascript code in the page is about **345.706kb**, and **112.759k
             "byteSize": 1135,
             "gzip": 438,
             "content": ".wa-we-image-border .wa-we-image-box{overflow:hidden;}.wa-we-image-border .wa-we-image-abstract{line-height:21px;padding: 6px 10px;}.wa-we-image-border .wa-we-image-imgs{/*width:100%;*//*display:inlin"
-        },
-        {
-            "byteSize": 1020,
-            "gzip": 373,
-            "content": ".wa-sigma-celebrity-rela-scroller{white-space:nowrap;}.wa-sigma-celebrity-rela-entity{display:inline-block;vertical-align:top;}.wa-sigma-celebrity-rela-entity:first-child{padding-left:0px;}.wa-sigma-c"
-        },
-        {
-            "byteSize": 127,
-            "gzip": 92,
-            "content": ".wa-we-realtime-list-first{margin-top:3px;}.wa-we-realtime-abstract{margin-bottom:0;}.wa-we-realtime-bottom{margin-bottom:6px;}"
-        },
-        {
-            "byteSize": 215,
-            "gzip": 128,
-            "content": ".wa-offical-weibo-right{text-align: right;}.wa-offical-weibo-icon{padding-right: 8px;color: #999}.wa-offical-weibo-vip-1{padding-right: 2px;color: #3388ff;}.wa-offical-weibo-vip-2{padding-right: 2px;c"
-        },
-        {
-            "byteSize": 759,
-            "gzip": 296,
-            "content": ".wa-star-videolist .wa-star-videolist-poster {position: relative;overflow: hidden;}.wa-star-videolist .wa-star-videolist-poster .wa-star-videolist-info {position: relative;margin-top: -24px;height: 14"
-        },
-        {
-            "byteSize": 30937,
-            "gzip": 13458,
-            "content": "#relativewords{text-align:left;background-color:#fff;margin:.12rem 0}.rw-title{font-size:17px;height:41px;line-height:45px;color:#262626;padding:0 .21rem;border-bottom:1px solid #f0f0f0}.rw-list{paddi"
         }
+        
+        ...
     ],
     "images": [],
     "afterGzip": "112.759kb"
