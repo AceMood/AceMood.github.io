@@ -7,7 +7,10 @@ sc: js
 description: Performance
 keywords: front-end performance, TTI
 ---
-## preface
+
+> Unfortunately, though, the workmanlike application of those sound engineering principles isn’t always thrilling — until the software is completed on time and works without surprise.     --- <a class="authorOrTitle" href="https://en.wikipedia.org/wiki/Jon_Bentley_(computer_scientist)">Jon Bentley</a>
+
+## Preface
 
 Standing on date Aug 1st 2016, we talk about **TTI** optimization. Keep in mind that we have lots of methods can do. TTI means time to interact, first mentioned by Facebook when they guys do optimization of HomePage. 
 
@@ -38,7 +41,7 @@ Before digging into the technology, we notice all things they did can not only b
 
 ## Samples
 
-Back on your own project, I take the [Baidu.Inc Home page](https://m.baidu.com/s?word=%E4%B8%8A%E6%B5%B7) for example, it's not a real improvement, but an imagination. I wrote [some scripts](https://github.com/AceMood/htmlAnalyzer) to get the request(without cookie) result to analyze. On the mobile side, embed javascript, css and html into localStorage is a good idea, reduce request and use cookies to control the versioning resources. Without cookies can get the first view result with no-cache.
+Back to your own project, I take the [Baidu.Inc Home page](https://m.baidu.com/s?word=%E4%B8%8A%E6%B5%B7) for example, it's not a real improvement, but an imagination. I wrote [some scripts](https://github.com/AceMood/htmlAnalyzer) to get the request(without cookie) result to analyze. On the mobile side, embed javascript, css and html into localStorage is a good idea, reduce request and use cookies to control the versioning resources. Without cookies can get the first view result with no-cache.
 
 As I see, all javascript code in the page is about **345.706kb**, and **112.759kb** after gzip. The whole page is about **165kb** after gzip, which means js code occupies **68.34%**. 
 
