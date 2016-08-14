@@ -12,6 +12,10 @@ comment: false
             </div>
             <div class="panel-body">
                 {{ content }}
+
+                {% if page.auth %}
+                {% include notes.html %}
+                {% endif %}
             </div>
 
             <div class="panel-footer">
@@ -38,13 +42,6 @@ comment: false
         </div>
         {% endif %}
     </div>
-
-    {% if page.auth === 'self' %}
-    <div class="note">
-        <span class="note__caption">Note:</span>
-        <em class="note__content--warning"> I am a Chinese, writing in English is for exercise. If you want to refer my articles, please mark your own as refer from <a title="AceMood's Blog" href="{{ page.url }}" target="_blank">AceMood's Blog.</a></em>
-    </div>
-    {% endif %}
 
     <div class="col-md-4">
         <div class="panel panel-default">
