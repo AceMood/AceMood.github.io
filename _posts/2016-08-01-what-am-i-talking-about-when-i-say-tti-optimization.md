@@ -30,11 +30,15 @@ If you do not have sense about what you're going to do, do the data analysis fir
 
 If you're willing from another aspect, you can notice what Googlers have done on **Loading** and **Runtime**. To reduce the loading time (connection time) they implement and apply the [QUIC protocol](https://www.chromium.org/quic)
 
-<img src="/assets/images/20160801/002.png" alt="fb" style="width: 80%; height: auto;" />
+<br>
+<img src="/assets/images/20160801/002.png" alt="fb" style="width: 80%; height: auto; posiiton:relative; margin:auto" />
+<br>
 
 To improve the runtime performance, they use a new optimize compiler named [TurboFan](http://v8project.blogspot.com/2015/07/digging-into-turbofan-jit.html) in v8 engine.
 
 Before digging into the technology, we notice all things they did can not only bring benefit to Google, also for any other companies and organizations. So, Optimization is not a single task of one company, it relates to the whole social of Internet and Computer Sciense, further for whole human beings. If possible, top-level developers should join them to improve.
 
 Back on our own project, I take the [Baidu.Inc Home page](http://m.baidu.com/) for example, it's not a real improvement, but an imagination.
+
+
 
