@@ -147,7 +147,7 @@ Have no data on exactly TTI time, just from size, we can make an A/B test to com
 
 <img src="/assets/images/20160801/003.png" alt="fb" style="width: 80%; height: auto; positon:relative; margin: 20px auto;" />
 
-Of course, introduce new tools in the workflow is not an easy topic, and it may change the code have written by developers, gcc's **extern.js** and **goog.exportSymbol** mechanism can provide a usefull way to not break the callable relation between code in first view and other libraries, but it may need more testing before publishing. But how could we do a better job if we lost our imagination. All things depend on developers.
+Of course, introduce new tools in the workflow is not an easy topic, and it may change the code have written by developers, gcc's **extern.js** and **goog.exportSymbol** mechanism can provide a usefull way to not break the callable relation between code in first view and other libraries, but it may need more testing before publishing. But how could we do a better job if we lost our imagination. All things depend on developers. AND, you can even fork the tools and make your own if you dive into it and rewrite some compiler code, I think it can give a bigger promotion.
 
 
 
