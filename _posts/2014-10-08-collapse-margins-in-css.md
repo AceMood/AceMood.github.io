@@ -8,7 +8,7 @@ description: Event loop in JavaScript
 keywords: collapse margin, css, block format context
 ---
 
-# Specification from W3C
+# CSS2.1 Specification Snapshot from W3C
 
 8.3.1 Collapsing margins
 
