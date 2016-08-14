@@ -90,9 +90,3 @@ With such implementation, we can output the module in mess order (in case we enc
 1. JavaScript Module Loader should not prefetch module's dependencies until needed. Not only for performance, but also for packaging strategy.
 
 2. Packaging Strategy is an important issue when we consider the Front-end engineering. Simple enough, we can let developers take over this task through config package rules, but for flexible and less error-proned, we should build an Automated Packaging System (A.P.S) to analyze the access logs of our website and do the packaging automatically.
-
-
-<div class="note">
-<span class="note__caption">Note:</span>
-<em class="note__content--warning"> I am a Chinese, writing in English is for exercise. If you want to refer my articles, please mark your own as refer from <a title="AceMood's Blog" href="{{ page.url }}" target="_blank">AceMood's Blog.</a></em>
-</div>

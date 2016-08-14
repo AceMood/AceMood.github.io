@@ -494,8 +494,3 @@ When called setTimeout and setImmediate, it schedules the callback function as a
 <span class="note__caption">Note:</span>
 <em class="note__content--normal"> I am very lucky to have a bundle of guys as friends who know C++ very well, they teach me a lot and provide useful information.</em>
 </div>
-
-<div class="note">
-<span class="note__caption">Note:</span>
-<em class="note__content--warning"> I am a Chinese, writing in English is for exercise. If you want to refer my articles, please mark your own as refer from <a title="AceMood's Blog" href="{{ page.url }}" target="_blank">AceMood's Blog.</a></em>
-</div>
