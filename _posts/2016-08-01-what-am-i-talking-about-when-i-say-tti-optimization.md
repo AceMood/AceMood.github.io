@@ -40,7 +40,7 @@ Before digging into the technology, we notice all things they did can not only b
 
 Back on your own project, I take the [Baidu.Inc Home page](https://m.baidu.com/s?word=%E4%B8%8A%E6%B5%B7) for example, it's not a real improvement, but an imagination. I wrote [some scripts](https://github.com/AceMood/htmlAnalyzer) to get the request(without cookie) result to analyze. On the mobile side, embed javascript, css and html into localStorage is a good idea, reduce request and use cookies to control the versioning resources. Without cookies can get the first view result with no-cache.
 
-As I see, all javascript code in the page is about `345.706kb`, and `112.759kb` after gzip. The whole page is about `165kb` after gzip, which means js code occupies **68.34%**. 
+As I see, all javascript code in the page is about **345.706kb**, and **112.759kb** after gzip. The whole page is about **165kb** after gzip, which means js code occupies **68.34%**. 
 
 ```
 {
@@ -147,7 +147,7 @@ Have no data on exactly TTI time, just from size, we can make an A/B test to com
 
 <img src="/assets/images/20160801/003.png" alt="fb" style="width: 80%; height: auto; positon:relative; margin: 20px auto;" />
 
-Of course, introduce new tools in the workflow is not an easy topic, and it may change the code have written by developers, gcc's **extern.js** and **goog.exportSymbol** mechanism can provide a usefull way to not break the callable relation between code in first view and other libraries, but it may need more testing before publishing. But how could we do a better job if we lost our imagination. All things depend on developers. AND, you can even fork the tools and make your own if you dive into it and rewrite some compiler code, I think it can give a bigger promotion.
+Of course, introduce new tools in the workflow is not an easy topic, and it may change the code have written by developers, gcc's **extern.js** and **goog.exportSymbol** mechanism can provide a useful way to not break the relation between code in first view and other libraries, but it may need more testing before publishing. But how could we do a better job if we lost our imagination. All things depend on developers. AND, you can even fork the tools and make your own if you dive into it and rewrite some compiler code, I think it can give a bigger promotion.
 
 
 
