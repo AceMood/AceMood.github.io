@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Event loop in JavaScript
+auth: self
 tagline: by AceMood
 categories: JavaScript
 sc: js

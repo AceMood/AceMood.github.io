@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Issues with packaging
+auth: self
 tagline: by AceMood
 categories: JavaScript
 sc: js

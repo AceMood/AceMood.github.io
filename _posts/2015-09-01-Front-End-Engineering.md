@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Front-End-Engineering
+auth: self
 tagline: by AceMood
 categories: Front-end
 sc: fe

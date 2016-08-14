@@ -1,6 +1,7 @@
 ---
 layout: post
 title: What am I talking about when I say TTI optimization
+auth: self
 tagline: by AceMood
 categories: JavaScript
 sc: js
