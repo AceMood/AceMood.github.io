@@ -13,7 +13,7 @@ Standing on date Aug 1st 2016, we talk about **TTI** optimization. Keep in mind 
 
 <img src="/assets/images/20160801/001.png" alt="fb" style="width: 100%; height: auto;" />
 
-At that time, they defined the most important area as marked in red-line, and **the time between clicking the link button and user can interact with the key area content** named **TTI**. 
+At that time, they defined the most important area as marked in red-line, and **the time between clicking the link button from previous webpage and user can interact with the key area content on Facebook's homapage** named **TTI**. 
 
 ## Loading and runtime
 
