@@ -30,15 +30,125 @@ If you do not have sense about what you're going to do, do the data analysis fir
 
 If you're willing from another aspect, you can notice what Googlers have done on **Loading** and **Runtime**. To reduce the loading time (connection time) they implement and apply the [QUIC protocol](https://www.chromium.org/quic)
 
-<br>
-<img src="/assets/images/20160801/002.png" alt="fb" style="width: 80%; height: auto; posiiton:relative; margin:auto" />
-<br>
+<img src="/assets/images/20160801/002.png" alt="fb" style="width: 80%; height: auto; positon:relative; margin: 20px auto;" />
 
 To improve the runtime performance, they use a new optimize compiler named [TurboFan](http://v8project.blogspot.com/2015/07/digging-into-turbofan-jit.html) in v8 engine.
 
 Before digging into the technology, we notice all things they did can not only bring benefit to Google, also for any other companies and organizations. So, Optimization is not a single task of one company, it relates to the whole social of Internet and Computer Sciense, further for whole human beings. If possible, top-level developers should join them to improve.
 
-Back on our own project, I take the [Baidu.Inc Home page](http://m.baidu.com/) for example, it's not a real improvement, but an imagination.
+## Samples
+
+Back on your own project, I take the [Baidu.Inc Home page](https://m.baidu.com/s?word=%E4%B8%8A%E6%B5%B7) for example, it's not a real improvement, but an imagination. I wrote [some scripts](https://github.com/AceMood/htmlAnalyzer) to get the request(without cookie) result to analyze. On the mobile side, embed javascript, css and html into localStorage is a good idea, reduce request and use cookies to control the versioning resources. Without cookies can get the first view result with no-cache.
+
+As I see, all javascript code in the page is about `345.706kb`, and `112.759kb` after gzip. The whole page is about `165kb` after gzip, which means js code occupies **68.34%**. 
+
+```
+{
+    "jsTotalByteSize": "345.706kb",
+    "cssTotalByteSize": "64.058kb",
+    "scripts": [
+        {
+            "byteSize": 1269,
+            "gzip": 634,
+            "content": "(function(){window._uid='';var B = window.B || {};B.comm = B.comm || {};B.comm.isAndroid = 0;B.comm.isShwoCallBaiduApp = 0;B.comm.lsConf={lsSuportKey:'lssp',lsVersionKey:'lsv',lsPrefix:'wise_se_'};win"
+        },
+        {
+            "byteSize": 7001,
+            "gzip": 2629,
+            "content": "!function(t){function n(){return e[i]=e[i]||t.apply(this,arguments),e[i]}window.B=window.B||{};var e=B.search=B.search||{},i=\"eventManager\";n.apply(this,[])}(function(){function t(t,n){try{t.apply(thi"
+        },
+        {
+            "byteSize": 118,
+            "gzip": 114,
+            "content": "!function(){document.addEventListener(\"touchstart\",function(){B=B||{},B.comm=B.comm||{},B.comm.enableTotop=!1},!1)}();"
+        },
+        {
+            "byteSize": 1938,
+            "gzip": 946,
+            "content": "window.B=window.B||{},function(t){var a=function(){function a(t,a){m=\"virtual\",b.routeStatus={action:\"push\",type:\"virtual\"};var e=t;if(e)if(\"base\"==t){for(var r in y)l.remove(y[r]);l.set(t,a)}else l.s"
+        },
+        {
+            "byteSize": 3217,
+            "gzip": 1410,
+            "content": "window.B=window.B||{},function(t){function a(){function a(){var t=location.href.match(/#(.*)$/),a=t?t[0]:\"\";return 0===a.indexOf(\"#%7C\")&&(a=a.replace(/%7C/,\"|\")),a||\"\"}function e(t){t&&t.last&&\"base\""
+        },
+        {
+            "byteSize": 3377,
+            "gzip": 1437,
+            "content": "A.merge(function(){if (document.querySelector(\"[srcid='91'][order='1']\")){A._setContainer(document.querySelector(\"[srcid='91'][order='1']\"),true);}else{A._setContainer(document.querySelector(\"[srcid='"
+        },
+        {
+            "byteSize": 5542,
+            "gzip": 2004,
+            "content": "A.merge(function(){if (document.querySelector(\"[srcid='we_image'][order='2']\")){A._setContainer(document.querySelector(\"[srcid='we_image'][order='2']\"),true);}else{A._setContainer(document.querySelect"
+        }
+        
+        ...
+        
+    ],
+    "styles": [
+        {
+            "byteSize": 20,
+            "gzip": 40,
+            "content": "#page{display:none;}"
+        },
+        {
+            "byteSize": 29663,
+            "gzip": 7454,
+            "content": "@font-face{font-family:sicons;src:url(//m.baidu.com/static/search/iconfont/search_iconfont_128e950d.eot);src:url(//m.baidu.com/static/search/iconfont/search_iconfont_128e950d.eot#iefix) format('embedd"
+        },
+        {
+            "byteSize": 62,
+            "gzip": 77,
+            "content": "#page-hd {visibility: visible;}.result-loading {display:none;}"
+        },
+        {
+            "byteSize": 1657,
+            "gzip": 555,
+            "content": ".wa-bk-polysemy-hide {display: none;}.wa-bk-polysemy-greeting {height: 38px;border: solid 1px #ddd;border-bottom-width: 0;overflow: hidden;-webkit-user-select: none;user-select: none;}.wa-bk-polysemy-"
+        },
+        {
+            "byteSize": 1135,
+            "gzip": 438,
+            "content": ".wa-we-image-border .wa-we-image-box{overflow:hidden;}.wa-we-image-border .wa-we-image-abstract{line-height:21px;padding: 6px 10px;}.wa-we-image-border .wa-we-image-imgs{/*width:100%;*//*display:inlin"
+        },
+        {
+            "byteSize": 1020,
+            "gzip": 373,
+            "content": ".wa-sigma-celebrity-rela-scroller{white-space:nowrap;}.wa-sigma-celebrity-rela-entity{display:inline-block;vertical-align:top;}.wa-sigma-celebrity-rela-entity:first-child{padding-left:0px;}.wa-sigma-c"
+        },
+        {
+            "byteSize": 127,
+            "gzip": 92,
+            "content": ".wa-we-realtime-list-first{margin-top:3px;}.wa-we-realtime-abstract{margin-bottom:0;}.wa-we-realtime-bottom{margin-bottom:6px;}"
+        },
+        {
+            "byteSize": 215,
+            "gzip": 128,
+            "content": ".wa-offical-weibo-right{text-align: right;}.wa-offical-weibo-icon{padding-right: 8px;color: #999}.wa-offical-weibo-vip-1{padding-right: 2px;color: #3388ff;}.wa-offical-weibo-vip-2{padding-right: 2px;c"
+        },
+        {
+            "byteSize": 759,
+            "gzip": 296,
+            "content": ".wa-star-videolist .wa-star-videolist-poster {position: relative;overflow: hidden;}.wa-star-videolist .wa-star-videolist-poster .wa-star-videolist-info {position: relative;margin-top: -24px;height: 14"
+        },
+        {
+            "byteSize": 30937,
+            "gzip": 13458,
+            "content": "#relativewords{text-align:left;background-color:#fff;margin:.12rem 0}.rw-title{font-size:17px;height:41px;line-height:45px;color:#262626;padding:0 .21rem;border-bottom:1px solid #f0f0f0}.rw-list{paddi"
+        }
+    ],
+    "images": [],
+    "afterGzip": "112.759kb"
+}
+```
+
+Have no data on exactly TTI time, just from size, we can make an A/B test to compare the result if you launch ggc advanced mode for js code compressing.
+
+<img src="/assets/images/20160801/003.png" alt="fb" style="width: 80%; height: auto; positon:relative; margin: 20px auto;" />
+
+Of course, introduce new tools in the workflow is not an easy topic, and it may change the code have written by developers, gcc's **extern.js** and **goog.exportSymbol** mechanism can provide a usefull way to not break the callable relation between code in first view and other libraries, but it may need more testing before publishing. But how could we do a better job if we lost our imagination. All things depend on developers.
+
 
 
 
