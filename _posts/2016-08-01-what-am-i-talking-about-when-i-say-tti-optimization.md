@@ -32,7 +32,7 @@ If you do not have sense about what you're going to do, do the data analysis fir
 * If you have many images (biggest size) on the first viewport, do your best to reduce the size of images and requests or cache all the unchanged data on client, then analyze it again, compare the results and make other decisions.       
 * If the javascript code on your website is the critical point, do some other work to improve it. Also you must consider as time goes on, your website may become bigger and bigger, how to balence it.
 
-If you're willing from another aspect, you can notice what Googlers have done on **Loading** and **Runtime**. To reduce the loading time (connection time) they implement and apply the [QUIC protocol](https://www.chromium.org/quic)
+If you're willing from another aspect, you can notice what Googlers have done on **Loading** and **Runtime**. To reduce the loading time (connection time) they implement and apply the [QUIC protocol](https://www.chromium.org/quic), introduced [script streaming](http://blog.chromium.org/2015/03/new-javascript-techniques-for-rapid.html) and so on.
 
 <img src="/assets/images/20160801/002.png" alt="fb" style="width: 80%; height: auto; positon:relative; margin: 20px auto;" />
 
@@ -42,7 +42,9 @@ Before digging into the technology, we notice all things they did can not only b
 
 ## Samples
 
-Back to your own project, I take the [Baidu.Inc Home page](https://m.baidu.com/s?word=%E4%B8%8A%E6%B5%B7) for example, it's not a real improvement, but an imagination. I wrote [some scripts](https://github.com/AceMood/htmlAnalyzer) to get the request(without cookie) result to analyze. On the mobile side, embed javascript, css and html into localStorage is a good idea, reduce request and use cookies to control the versioning resources. Without cookies can get the first view result with no-cache.
+Back to your own project, I take the [Baidu.Inc Home page](https://m.baidu.com/s?word=%E4%B8%8A%E6%B5%B7) for example, it's not a real improvement, but an imagination. You can also apply **ajaxpipe(quickling)** to improve TTI for the link button click events, here we just talk about **real first view** from another website to your webpage. 
+
+I wrote [some scripts](https://github.com/AceMood/htmlAnalyzer) to get the request(without cookie) result to analyze. On the mobile side, [embed javascript](https://developers.google.com/speed/docs/insights/BlockingJS), css and html into localStorage is a good idea, reduce request size and use cookies to control the versioning resources. Without cookies can get the first view result with no-cache.
 
 As I see, all javascript code in the page is about **345.706kb**, and **112.759kb** after gzip. The whole page is about **165kb** after gzip, which means js code occupies **68.34%**. 
 
