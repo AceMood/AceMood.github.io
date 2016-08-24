@@ -1,6 +1,7 @@
 ---
 layout: post
 title: innerHTML and script tips
+auth: self
 tagline: by AceMood
 categories: Front-end
 sc: fe
