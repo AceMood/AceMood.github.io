@@ -1,10 +1,10 @@
 ---
 layout: post
-title: innerHTML tips
+title: innerHTML and script tips
 tagline: by AceMood
 categories: Front-end
 sc: fe
-description: innerHTML tips
+description: innerHTML and script tips
 keywords: innerHTML disable script execution, script load parallel
 ---
 
