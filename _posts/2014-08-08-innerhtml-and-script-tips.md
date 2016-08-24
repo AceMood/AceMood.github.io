@@ -15,24 +15,23 @@ When you want to insert a fragment of html in javascript, how will you do that? 
 Script tag will not execute whether it is inlined or external linked. Say, you have code fragment:
 
 ``` javascript
-var str = '<script>alert("well done!")</script>';
-element.innerHTML = str;
+  var str = '<script>alert("well done!")</script>';
+  element.innerHTML = str;
 ```
 Nothing will happen, the script code won't execute. But style code escape from this rule, you can visit the [jsbin demo](http://jsbin.com/zeyavadeyo/edit?html,js,output) for more information.
 
 ## Script Load Parallel
 
 Another issue, if you have more than one script in your page, you get them download and executed one by one, such as [demo](http://jsbin.com/nufinehebi/edit?html,output), I set the blocking.php produce script and sleep 5 seconds, but the second script with simple code:
+
 ```
 sleep(5);
-
 header('Content-type', 'application/javascript');
-
 echo 'alert(\'blocking.php loaded!\');';
 ```
 
 ``` javascrpt
-alert('a.js loaded!');
+  alert('a.js loaded!');
 ```
 
 As you expected, they loaded parallel(in Chrome and Firefox 3.0 after) and execute in order. But they will execute parallel when you use innerHTML.
