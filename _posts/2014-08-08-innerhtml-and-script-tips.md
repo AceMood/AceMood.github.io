@@ -23,7 +23,7 @@ Nothing will happen, the script code won't execute. But style code escape from t
 ## Script Load Parallel
 
 Another issue, if you have more than one script in your page, you get them download and executed one by one, such as [demo](http://jsbin.com/nufinehebi/edit?html,output), I set the blocking.php produce script and sleep 5 seconds, but the second script with simple code:
-``` php
+```
 sleep(5);
 
 header('Content-type', 'application/javascript');
@@ -35,9 +35,26 @@ echo 'alert(\'blocking.php loaded!\');';
 alert('a.js loaded!');
 ```
 
-As you expected, they loaded in order. But will parallel when you use innerHTML.
+As you expected, they loaded parallel(in Chrome and Firefox 3.0 after) and execute in order. But they will execute parallel when you use innerHTML.
 
+``` javascript
+  var frag = document.createDocumentFragment();
+  var blockjs = document.createElement('script');
+  blockjs.src = 'http://localhost/jsbin/innerhtml/blocking.php';
+  var ajs = document.createElement('script');
+  ajs.src = 'http://localhost/jsbin/innerhtml/a.js';
 
+  frag.appendChild(blockjs);
+  frag.appendChild(ajs);
+  container.appendChild(frag);
+```
+
+Visit [demo](http://jsbin.com/vorumopogo/edit?html,js,output)
+
+## Conclusion
+
+1. The result will impact how we implement the js loader in client-side, we must take care of the order of script execution when use dynamic insertion. 
+2. Need more test in other browsers.
 
 ## References
 
