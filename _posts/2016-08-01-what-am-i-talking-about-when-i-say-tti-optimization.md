@@ -137,7 +137,7 @@ Of course, introduce new tools in the workflow is not an easy topic, and it may 
 They encounter some other problems in PageSearch Team, the whole team is heavily depending on smarty solution, what's the fuck?! No consideration of performance, just for so called agile developement. It means some JavaScript code like
 
 ``` javascript
-var log = {%requestData.log|escape%};
+var log = {\%requestData.log|escape:none\%};
 ```
 
 will be difficult to compressed even pass the AST check, we can only retrieve all code inlined like this through smarty functions and remove white-space and newline charactors.
