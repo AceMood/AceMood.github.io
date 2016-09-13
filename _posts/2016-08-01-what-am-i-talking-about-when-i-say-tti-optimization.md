@@ -131,3 +131,17 @@ Have no data on exactly TTI time, just from size, we can make an A/B test to com
 <img src="/assets/images/20160801/003.png" alt="fb" style="width: 80%; height: auto; positon:relative; margin: 20px auto;" />
 
 Of course, introduce new tools in the workflow is not an easy topic, and it may change the code have written by developers, gcc's **extern.js** and **goog.exportSymbol** mechanism can provide a useful way to not break the relation between code in first view and other libraries, but it may need more testing before publishing. But how could we do a better job if we lost our imagination. All things depend on developers. AND, you can even fork the tools and make your own if you dive into it and rewrite some compiler code, I think it can give a bigger promotion.
+
+## Update
+
+They encounter some other problems in PageSearch Team, the whole team is heavily depending on smarty solution, what's the fuck?! No consideration of performance, just for so called agile developement. It means some JavaScript code like
+
+``` javascript
+var log = {%requestData.log|escape%};
+```
+
+will be difficult to compressed even pass the AST check, we can only retrieve all code inlined like this through smarty functions and remove white-space and newline charactors.
+
+Needn't be depressed, we also have many other method to do the optimization, maybe tightly work with ServerSide Team follow best practise and depend on new features like ServiceWorker and so on. 
+
+To be continued...
