@@ -148,7 +148,7 @@ Again, we can move the smarty code to a string like:
 var log = '{\%requestData.log|escape:none\%}';
 ```
 
-It will parse normally by the compress tools, but we have other issues like `foreach` usage and other smarty built-in funcitons.
+It will be parsed normally by the compress tools, but we have other issues like `foreach` usage and other smarty built-in funcitons.
 
 Needn't be depressed, we also have many other method to do the optimization, maybe tightly work with ServerSide Team follow best practise and depend on new features like ServiceWorker and so on. 
 
