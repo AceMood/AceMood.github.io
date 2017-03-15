@@ -11,7 +11,7 @@ keywords: Node, non-blocking, event loop, javascript, setTimeout, nextTick, setI
 
 > There are only two kinds of languages: the ones people complain about and the ones nobody uses.     --- <a class="authorOrTitle" href="https://www.goodreads.com/author/show/64947.Bjarne_Stroustrup">Bjarne Stroustrup</a>
 
-# preface
+# Preface
 
 This can be a long article, even tedious. It's caused by <a title="problem" href="https://gist.github.com/mmalecki/1257394" target="_blank">a topic of process.nextTick</a>. Javascript developer or front-end engineer can face to setTimeout, setImmediate, nextTick everyday, but what the difference between them? Some seniors can tell:
 
@@ -29,29 +29,31 @@ This article is not only about event loop, but also something like Non-blocking 
 
 Operating System's I/O Models can be divided into five categories: Blocking I/O, Non-blocking I/O, I/O Multiplexing, Signal-driven I/O and Asynchronous I/O. I will take Network I/O case for example, though there still have File I/O and other types, such as DNS relative and user code in Node. Take Network scenario as an example is just for convenience.
 
-### Blocking I/O
+## Blocking I/O
 Blocking I/O is the most common model but with huge limitation, obviously it can only deal with one stream (stream can be file, socket or pipe). Its flows diagram demonstrated below:
-<img src="/assets/images/20160201/git.001.jpg" alt="" style="width: 100%; height: auto;" />
+<img src="/assets/images/20160201/git.001.jpg" alt="" style="width: 80%; height: auto;" />
 
-### Non-Blocking I/O
+## Non-Blocking I/O
 Non-Blocking I/O, AKA busy looping, it can deal with multiple streams. The application process repeatedly call system to get the status of data, once any stream's data becomes ready, the application process block for data copy and then deal with the data available. But it has a big disadvantage for wasting CPU time. Its flows diagram sdemonstrated below:
-<img src="/assets/images/20160201/git.002.jpg" alt="" style="width: 100%; height: auto;" />
 
-### I/O Multiplexing
+<img src="/assets/images/20160201/git.002.jpg" alt="" style="width: 80%; height: auto;" />
+
+## I/O Multiplexing
 Select and poll are based on this type, see more about <a href="http://man7.org/linux/man-pages/man2/select.2.html" target="_blank">select</a> and <a href="http://man7.org/linux/man-pages/man2/poll.2.html" target="_blank">poll</a>. I/O Multiplexing retains the advantage of Non-Blocking I/O, it can also deal with multiple streams, but it's also one of the blocking types. Call select (or poll) will block application process until any stream becomes ready. And even worse, it introduce another system call (recvfrom). 
 
 Notes: Another closely related I/O model is to use multi-threading with blocking I/O. That model very closely resembles the model described above, except that instead of using select to block on multiple file descriptors, the program uses multiple threads (one per file descriptor), and each thread is then free to call blocking system calls like recvfrom. 
 
 Its flows diagram demonstrated below:
-<img src="/assets/images/20160201/git.003.jpg" alt="" style="width: 100%; height: auto;" />
+<img src="/assets/images/20160201/git.003.jpg" alt="" style="width: 80%; height: auto;" />
 
-### Signal-driven I/O
+## Signal-driven I/O
 In this model, application process system call sigaction and install a signal handler, the kernel will return immediately and the application process can do other works without being blocked. When the data is ready to be read, the SIGIO signal is generated for our process. We can either read the data from the signal handler by calling recvfrom and then notify the main loop that the data is ready to be processed, or we can notify the main loop and let it read the data. Its flows diagram demonstrated below:
-<img src="/assets/images/20160201/git.004.jpg" alt="" style="width: 100%; height: auto;" />
+<img src="/assets/images/20160201/git.004.jpg" alt="" style="width: 80%; height: auto;" />
 
-### Asynchronous I/O
+## Asynchronous I/O
 Asynchronous I/O is defined by the POSIX specification, it's an ideal model. In general, system call like aio_*  functions work by telling the kernel to start the operation and to notify us when the entire operation (including the copy of the data from the kernel to our buffer) is complete. The main difference between this model and the signal-driven I/O model in the previous section is that with signal-driven I/O, the kernel tells us when an I/O operation can be initiated, but with asynchronous I/O, the kernel tells us when an I/O operation is complete. Its flows demonstrated below:
-<img src="/assets/images/20160201/git.005.jpg" alt="" style="width: 100%; height: auto;" />
+
+<img src="/assets/images/20160201/git.005.jpg" alt="" style="width: 80%; height: auto;" />
 
 After introduced those type of I/O models, we can identify them with the current hot-spots technologies such as epoll in linux and <a title="kqueue" href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/kqueue.2.html" target="_blank">kqueue</a> in OSX. They're more like the I/O multiplexing model, only the <a title="IOCP" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365198(v=vs.85).aspx" target="_blank">IOCP on windows</a> implement the fifth model. See more: <a title="epoll和kqueue的实现原理" href="https://www.zhihu.com/question/20122137http://" target="_blank">from zhihu</a>.
 
@@ -65,7 +67,7 @@ Before we read more about libuv, I should make a tip, I have read many articles 
 
 First I want to differ the conceptions of `event loop` and `event loop iteration`. Event loop is a task queue which bind with a single thread, they are one-to-one relation. Event loop iteration is the procedure when the runtime check for task (piece of code) queued in event loop and execute it. The two conceptions map tp two important function / object in libuv. One is <a href="http://docs.libuv.org/en/v1.x/loop.html#uv-loop-t-event-loop" target="_blank">uv_loop_t</a>, which represent for one event loop object and <a href="http://docs.libuv.org/en/v1.x/loop.html#c.uv_run" target="_blank">API: uv_run </a>, which can be treated as the entry point of event loop iteration. All functions in libuv named starts with `uv_`, which really make reading the source code easy. 
 
-### uv_run
+## uv_run
 
 The most important API in libuv is `uv_run`, every time call this function can do an event loop iteration. uv_run code shows below (based on implementation of v1.8.0):
 
@@ -126,7 +128,7 @@ int uv_run(uv_loop_t* loop, uv_run_mode mode) {
 {% endhighlight %}
 
 Every time runtime do an event loop iteration, it executes the ordered code as figure below, and we can know what kind of callbacks would be called during each event loop iteration. 
-<img src="/assets/images/20160201/git.006.jpg" alt="event loop iteration" style="width: 100%; height: auto;" />
+<img src="/assets/images/20160201/git.006.jpg" alt="event loop iteration" style="width: 80%; height: auto;" />
 
 As libuv described the <a target="_blank" href="http://docs.libuv.org/en/v1.x/design.html">underline principle</a>, timer relative callbacks will be called in the `uv__run_timers(loop)` step, but it don't mention about `setImmediate` and `process.nextTick`. It's reasonable obviously, libuv is lower layer of Node, so logic in Node will be taken account in itself (more flexible). After diving into the source code of Node project, we can see what happened when setTimeout/setInterval, setImmediate and process.nextTick.
 
@@ -136,7 +138,7 @@ Node is a popular and famous platform for JavaScript, this article don't cover a
 
 All Node source code shown in this article based on v4.4.0 (LTS). 
 
-### Setup
+## Setup
 
 When setup a Node process, it also setup an event loop. See the entry method `StartNodeInstance` in `src/node.cc`, if event loop is alive the do-while loop will continue.
 
@@ -159,9 +161,9 @@ do {
 } while (more == true);
 {% endhighlight %}
 
-### Async user code
+## Async user code
 
-##### setTimeout
+### setTimeout
 > Timers are crucial to Node.js. Internally, any TCP I/O connection creates a timer so that we can time out of connections. Additionally, many user user libraries and applications also use timers. As such there may be a significantly large amount of timeouts scheduled at any given time. Therefore, it is very important that the timers implementation is performant and efficient.
   
 In Node, definition of setTimeout and setInterval locate at `lib/timer.js`. For performance, timeout objects with their timeout value are stored in a Key-Value structure (object in JavaScript), key is the timeout value in millisecond, value is a linked-list contains all the timeout objects share the same timeout value. It used a C++ handle defined in `src/timer_wrap.cc` as each item in the linked-list. When you write the code `setTimeout(callback, timeout)`, Node initialize a linked-list(if not exists) contains the timeout object. Timeout object has a _timer field point to an instance of TimerWrap (C++ object), then call the _timer.start method to delegate the timeout task to Node. The snippet from `lib/timer.js`, when called setTimeout in JavaScript it new a TimersList() object as a linked-list node and store it in the Key-Value structure.
@@ -270,7 +272,7 @@ void uv__run_timers(uv_loop_t* loop) {
     
 Notice about the `uv_timer_again(handle)` code above, it differs the setTimeout and setInterval, but the two APIs invoke the same functions underline.  
 
-##### setImmediate
+### setImmediate
 
 Node did most of the same job with `setTimeout` when you write javascript code as `setImmediate(callback)`. Definition of setImmediate is also in `lib/timer.js`, when call this method it will add private property `_immediateCallback` to process object so that C++ bindings can identify the callbacks' proxy registered, and finally return an immediate object (you can think it as another timeout object but without timeout property). Internally, `timer.js` maintain an array named immediateQueue, which contains all callbacks installed in current event loop iteration.
 
@@ -388,7 +390,7 @@ static void CheckImmediate(uv_check_t* handle) {
 
 So we knew that, in every event loop iteration, setImmediate callbacks would be executed in the `uv__run_check(loop);` step followed `uv__io_poll(loop, timeout);`. If get a little confused, you can back to the diagram in <a href="#libuv">event loop iteration execute order.</a>
 
-##### process.nextTick
+### process.nextTick
 
 process.nextTick might have the ability to hide its implementation **^_^**. I have <a target="_blank" href="https://github.com/nodejs/node/issues/5584">issued that</a> for node project to get more information. At last I closed it myself because I thought the author got a little confused about my question. Debug into the source code also make sense, I add logs in the source code and recompiled the whole project to see what happened.
 
@@ -465,11 +467,11 @@ I have added some logs to see what happened internally. Only know the callbacks 
 
 A dark day seems bright now, every stage in `uv_run` can be the last stage of event loop iteration, such like timeout, it check and execute the `env()->tick_callback_function()`. Another API setImmediate ended in the internal called `node::MakeCallback`, node does the same work. And the last part of StartNodeInstance, `EmitBeforeExit(env)` and `EmitExit(env)` will also call the `node::MakeCallback` to ensure the tick_callback_function can be called before process exit.
 
-### File I/O
+## File I/O
 
 Not yet finished, coming soon...
 
-### Network I/O
+## Network I/O
 
 Not yet finished, coming soon...
 
