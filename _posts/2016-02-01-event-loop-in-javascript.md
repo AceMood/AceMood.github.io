@@ -13,13 +13,13 @@ keywords: Node, non-blocking, event loop, javascript, setTimeout, nextTick, setI
 
 # Preface
 
-This can be a long article, even tedious. It's caused by <a title="problem" href="https://gist.github.com/mmalecki/1257394" target="_blank">a topic of process.nextTick</a>. Javascript developer or front-end engineer can face to setTimeout, setImmediate, nextTick everyday, but what the difference between them? Some seniors can tell:
+This can be a long article, even tedious. It's caused by <a title="problem" href="https://gist.github.com/mmalecki/1257394" target="_blank">a topic of process.nextTick</a>. Javascript developer may face to setTimeout, setImmediate, process.nextTick everyday, but what the difference between them? Some seniors can tell:
 
-1. setImmediate is lack of implementations on browser side, only high-versioned Internet Explorer do this job.
-2. nextTick can be triggered first，setImmediate sometime come last.
-3. Node environment has implememted all of the APIs.
+1. setImmediate is lack of implementations on browser side, only high-versioned Internet Explorer make sense.
+2. process.nextTick is triggered first，setImmediate sometimes comes last.
+3. Node environment has implemented all of the APIs.
 
-At the very beginning, I tried to search for some answers such as <a href="https://nodejs.org/dist/latest-v4.x/docs/api/process.html#process_process_nexttick_callback_arg" target="_blank">Node official docs</a>，<a href="http://howtonode.org/understanding-process-next-tick" target="_blank">and</a> <a href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/" target="_blank">other</a> <a href="https://www.nczonline.net/blog/2013/07/09/the-case-for-setimmediate/" target="_blank">articles</a>. But unfortunately, I couldn't access the truth. Other explaination can be found in reddit blackboard, <a href="https://www.reddit.com/r/node/comments/2la8zb/setimmediate_vs_processnexttick_vs_settimeout/" target="_blank">1</a>, <a href="https://www.reddit.com/r/node/comments/323ojd/what_is_the_difference_between/" target="_blank">2</a> and the author of Node wrote an <a href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/" target="_blank">article</a> try to explain the logics. 
+At the very beginning, I've tried to search answers from <a href="https://nodejs.org/dist/latest-v4.x/docs/api/process.html#process_process_nexttick_callback_arg" target="_blank">Node official docs</a>，<a href="http://howtonode.org/understanding-process-next-tick" target="_blank">and</a> <a href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/" target="_blank">other</a> <a href="https://www.nczonline.net/blog/2013/07/09/the-case-for-setimmediate/" target="_blank">articles</a>. But unfortunately, I couldn't access the truth. Other explaination can be found in reddit blackboard, <a href="https://www.reddit.com/r/node/comments/2la8zb/setimmediate_vs_processnexttick_vs_settimeout/" target="_blank">1</a>, <a href="https://www.reddit.com/r/node/comments/323ojd/what_is_the_difference_between/" target="_blank">2</a> and the author of Node wrote an <a href="https://nodesource.com/blog/understanding-the-nodejs-event-loop/" target="_blank">article</a> try to explain the logics. 
 
 I can not tell how many people know the truth and want to explore it, if you know more information, please <a href="mailto:zmike86@gmail.com">contact me</a>, I'm waiting for more useful information.
 
@@ -128,7 +128,7 @@ int uv_run(uv_loop_t* loop, uv_run_mode mode) {
 {% endhighlight %}
 
 Every time runtime do an event loop iteration, it executes the ordered code as figure below, and we can know what kind of callbacks would be called during each event loop iteration. 
-<img src="/assets/images/20160201/git.006.jpg" alt="event loop iteration" style="width: 80%; height: auto;" />
+<img src="/assets/images/20160201/loop_iteration.png" alt="event loop iteration" style="width: 60%; height: auto;" />
 
 As libuv described the <a target="_blank" href="http://docs.libuv.org/en/v1.x/design.html">underline principle</a>, timer relative callbacks will be called in the `uv__run_timers(loop)` step, but it don't mention about `setImmediate` and `process.nextTick`. It's reasonable obviously, libuv is lower layer of Node, so logic in Node will be taken account in itself (more flexible). After diving into the source code of Node project, we can see what happened when setTimeout/setInterval, setImmediate and process.nextTick.
 
@@ -492,6 +492,7 @@ When called setTimeout and setImmediate, it schedules the callback function as a
 [7] <a target="_blank" href="http://blog.libtorrent.org/2012/10/asynchronous-disk-io/">asynchronous-disk-io</a><br/>
 [8] <a target="_blank" href="http://prkr.me/words/2014/understanding-the-javascript-event-loop/">understanding-the-javascript-event-loop</a><br/>
 [9] <a target="_blank" href="http://www.xmailserver.org/linux-patches/nio-improve.html">linux-patches/nio-improve</a><br/>
+[10] <a target="_blank" href="http://docs.libuv.org/en/v1.x/design.html">libuv design document</a>
 
 <div class="note">
 <span class="note__caption">Note:</span>
